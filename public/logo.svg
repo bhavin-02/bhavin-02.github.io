@@ -1,0 +1,14 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle with glassmorphism effect -->
+  <circle cx="20" cy="20" r="18" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  
+  <!-- Letter B -->
+  <path d="M12 10 L12 30 L22 30 C25.5 30 28 27.5 28 24 C28 22 27 20.5 25.5 20 C26.5 19.5 27 18 27 16.5 C27 13.5 24.5 10 21 10 L12 10 Z M16 14 L20 14 C21.5 14 22.5 15 22.5 16.5 C22.5 18 21.5 19 20 19 L16 19 L16 14 Z M16 22 L21 22 C22.5 22 23.5 23 23.5 24.5 C23.5 26 22.5 27 21 27 L16 27 L16 22 Z" fill="url(#gradient)"/>
+</svg>
