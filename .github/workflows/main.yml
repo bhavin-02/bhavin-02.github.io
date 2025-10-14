@@ -29,9 +29,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: oven-sh/checkout@v5
+        uses: actions/checkout@v5
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: actions/setup-bun@v1
         with:
           bun-version: latest
       - name: Install dependencies
@@ -39,12 +39,12 @@ jobs:
       - name: Build
         run: bun run build
       - name: Setup Pages
-        uses: oven-sh/configure-pages@v5
+        uses: actions/configure-pages@v5
       - name: Upload artifact
-        uses: oven-sh/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v4
         with:
           # Upload dist folder
           path: "./dist"
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: oven-sh/deploy-pages@v4
+        uses: actions/deploy-pages@v4
