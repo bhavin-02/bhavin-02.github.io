@@ -164,16 +164,27 @@ export function ModernNavigation() {
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                     >
                       <Button
+                        key={item.id}
+                        variant={
+                          activeSection === item.id ? "default" : "ghost"
+                        }
+                        size="sm"
                         onClick={() => scrollToSection(item.id)}
-                        variant="ghost"
-                        className={`w-full justify-start rounded-xl transition-all duration-300 ${
+                        className={`relative w-full justify-start rounded-xl transition-all duration-300 ${
                           activeSection === item.id
-                            ? "gradient-primary text-white"
+                            ? "gradient-primary text-white shadow-lg"
                             : "text-white/70 hover:text-white hover:bg-white/10"
                         }`}
                       >
-                        <Icon className="w-4 h-4 mr-3" />
+                        <Icon className="w-4 h-4 mr-2" />
                         {item.label}
+                        {activeSection === item.id && (
+                          <motion.div
+                            layoutId="activeIndicator"
+                            className="absolute inset-0 gradient-primary rounded-full -z-10"
+                            transition={{ type: "spring", duration: 0.6 }}
+                          />
+                        )}
                       </Button>
                     </motion.div>
                   );
