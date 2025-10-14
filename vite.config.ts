@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/bhavin-02.github.io/",
+  base: "/",
   build: {
     outDir: "dist",
     emptyOutDir: true,
