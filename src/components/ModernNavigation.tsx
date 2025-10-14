@@ -16,14 +16,17 @@ export function ModernNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
 
-  const navItems = useMemo(() => [
-    { id: "hero", label: "Home", icon: Home },
-    { id: "about", label: "About", icon: User },
-    { id: "experience", label: "Experience", icon: Briefcase },
-    { id: "projects", label: "Projects", icon: Code },
-    { id: "skills", label: "Skills", icon: Award },
-    { id: "contact", label: "Contact", icon: Mail },
-  ], []);
+  const navItems = useMemo(
+    () => [
+      { id: "hero", label: "Home", icon: Home },
+      { id: "about", label: "About", icon: User },
+      { id: "experience", label: "Experience", icon: Briefcase },
+      { id: "projects", label: "Projects", icon: Code },
+      { id: "skills", label: "Skills", icon: Award },
+      { id: "contact", label: "Contact", icon: Mail },
+    ],
+    []
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +56,10 @@ export function ModernNavigation() {
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: "smooth" });
+    if (element) {
+      const offsetTop = element.offsetTop;
+      window.scrollTo({ top: offsetTop, behavior: "smooth" });
+    }
     setIsOpen(false);
   };
 
