@@ -9,8 +9,9 @@ import {
   Send,
   Zap,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { useState } from "react";
+import { URLS } from "../constants/constants";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
@@ -66,7 +67,7 @@ export function Contact() {
       icon: Phone,
       label: "Phone",
       value: "+91 903 366 0048",
-      action: () => window.open("tel:+919033660048"),
+      action: () => window.open(URLS.PHONE_NUMBER),
       color: "text-green-400",
       gradient: "gradient-secondary",
     },
@@ -74,8 +75,7 @@ export function Contact() {
       icon: Linkedin,
       label: "LinkedIn",
       value: "Bhavin Gunjariya",
-      action: () =>
-        window.open("https://linkedin.com/in/bhavin-gunjariya", "_blank"),
+      action: () => window.open(URLS.LINKED_IN, "_blank"),
       color: "text-blue-500",
       gradient: "gradient-accent",
     },
@@ -111,6 +111,10 @@ export function Contact() {
       text: "Passionate about staying current with latest technologies",
     },
   ];
+
+  const childVariants: Variants = {
+    hovered: { rotate: 15, scale: 1.1 },
+  };
 
   return (
     <section id="contact" className="py-20 px-4 relative overflow-hidden">
@@ -187,34 +191,34 @@ export function Contact() {
                 alt="Modern Communication"
                 className="w-full h-64 md:h-80 object-cover rounded-2xl"
               />
-
-              {/* Floating contact elements */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                viewport={{ once: true }}
-                className="absolute -top-4 -left-4 glass rounded-2xl p-4 text-center"
-              >
-                <Clock className="w-6 h-6 text-green-400 mx-auto mb-1" />
-                <div className="text-sm font-bold text-gradient">24h</div>
-                <div className="text-xs text-white/60">Response</div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 1 }}
-                viewport={{ once: true }}
-                className="absolute -bottom-4 -right-4 glass rounded-2xl p-4 text-center"
-              >
-                <MessageCircle className="w-6 h-6 text-blue-400 mx-auto mb-1" />
-                <div className="text-sm font-bold text-gradient-secondary">
-                  100%
-                </div>
-                <div className="text-xs text-white/60">Available</div>
-              </motion.div>
             </div>
+
+            {/* Floating contact elements */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              viewport={{ once: true }}
+              className="absolute -top-4 -left-4 glass rounded-2xl p-4 text-center"
+            >
+              <Clock className="w-6 h-6 text-green-400 mx-auto mb-1" />
+              <div className="text-sm font-bold text-gradient">24h</div>
+              <div className="text-xs text-white/60">Response</div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 1 }}
+              viewport={{ once: true }}
+              className="absolute -bottom-4 -right-4 glass rounded-2xl p-4 text-center"
+            >
+              <MessageCircle className="w-6 h-6 text-blue-400 mx-auto mb-1" />
+              <div className="text-sm font-bold text-gradient-secondary">
+                100%
+              </div>
+              <div className="text-xs text-white/60">Available</div>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -239,13 +243,34 @@ export function Contact() {
               <CardContent className="space-y-4">
                 {contactInfo.map((info, index) => {
                   const Icon = info.icon;
+
+                  const parentVariants: Variants = {
+                    hovered: { y: -2, scale: 1.02, transition: { delay: -1 } },
+                  };
+
+                  const childVariants: Variants = {
+                    hovered: {
+                      scale: 1.1,
+                      rotate: 5,
+                      transition: { delay: -1 },
+                    },
+                  };
+
+                  const secondChildVariants: Variants = {
+                    hovered: { x: 5, transition: { delay: -1 } },
+                  };
+
                   return (
                     <motion.div
                       key={info.label}
                       initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      whileHover={{ y: -2, scale: 1.02 }}
-                      transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
+                      whileInView={{
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.3, delay: 0.4 + index * 0.1 },
+                      }}
+                      variants={parentVariants}
+                      whileHover="hovered"
                       viewport={{ once: true }}
                       className={`flex items-center gap-4 p-4 glass-dark rounded-xl ${
                         info.action ? "cursor-pointer hover:bg-white/10" : ""
@@ -253,7 +278,7 @@ export function Contact() {
                       onClick={info.action || undefined}
                     >
                       <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        variants={childVariants}
                         className={`w-12 h-12 ${info.gradient} rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300`}
                       >
                         <Icon className="w-5 h-5 text-white" />
@@ -268,7 +293,7 @@ export function Contact() {
                       </div>
                       {info.action && (
                         <motion.div
-                          whileHover={{ x: 5 }}
+                          variants={secondChildVariants}
                           className="opacity-0 group-hover:opacity-100 transition-all duration-300"
                         >
                           <Send className="w-4 h-4 text-primary" />
@@ -292,17 +317,30 @@ export function Contact() {
                 <ul className="space-y-4">
                   {benefits.map((benefit, index) => {
                     const Icon = benefit.icon;
+
+                    const childVariants: Variants = {
+                      hovered: { scale: 1.2, rotate: 10 },
+                    };
+
                     return (
                       <motion.li
                         key={index}
                         initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+                        whileInView={{
+                          opacity: 1,
+                          x: 0,
+                          transition: {
+                            duration: 0.4,
+                            delay: 0.5 + index * 0.1,
+                          },
+                        }}
+                        whileHover="hovered"
                         viewport={{ once: true }}
                         className="flex items-start gap-3 group"
                       >
                         <motion.div
-                          whileHover={{ scale: 1.2, rotate: 10 }}
+                          variants={childVariants}
+                          transition={{ delay: -1 }}
                           className="w-5 h-5 text-primary mt-0.5 group-hover:text-accent transition-all duration-300"
                         >
                           <Icon className="w-full h-full" />
@@ -443,22 +481,19 @@ export function Contact() {
                       },
                       {
                         icon: Phone,
-                        action: () => window.open("tel:+919033660048"),
+                        action: () => window.open(URLS.PHONE_NUMBER),
                         color: "hover:text-green-400 hover:bg-green-400/10",
                       },
                       {
                         icon: Linkedin,
-                        action: () =>
-                          window.open(
-                            "https://linkedin.com/in/bhavin-gunjariya",
-                            "_blank"
-                          ),
+                        action: () => window.open(URLS.LINKED_IN, "_blank"),
                         color: "hover:text-blue-500 hover:bg-blue-500/10",
                       },
                     ].map(({ icon: Icon, action, color }, index) => (
                       <motion.button
                         key={index}
                         whileHover={{ scale: 1.1, y: -2 }}
+                        transition={{ delay: -1 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={action}
                         className={`w-12 h-12 glass rounded-xl flex items-center justify-center text-white/60 ${color} transition-all duration-300`}
@@ -506,39 +541,35 @@ export function Contact() {
                 efficient code and modern design.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  onClick={() =>
-                    window.open(
-                      "mailto:bhavingj172@gmail.com?subject=Project Inquiry"
-                    )
-                  }
-                  className="gradient-primary hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
-                >
-                  <motion.div
-                    whileHover={{ rotate: 15, scale: 1.1 }}
-                    className="mr-2"
+                <motion.div whileHover="hovered">
+                  <Button
+                    size="lg"
+                    onClick={() =>
+                      window.open(
+                        "mailto:bhavingj172@gmail.com?subject=Project Inquiry"
+                      )
+                    }
+                    className="gradient-primary hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
                   >
-                    <Mail className="w-4 h-4" />
-                  </motion.div>
-                  Start a Conversation
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() =>
-                    window.open(
-                      "https://linkedin.com/in/bhavin-gunjariya",
-                      "_blank"
-                    )
-                  }
-                  className="glass border-white/20 text-white hover:bg-white/10 hover:shadow-lg transition-all duration-300 group"
-                >
-                  <motion.div whileHover={{ scale: 1.1 }} className="mr-2">
-                    <Linkedin className="w-4 h-4" />
-                  </motion.div>
-                  Connect on LinkedIn
-                </Button>
+                    <motion.div variants={childVariants} className="mr-2">
+                      <Mail className="w-4 h-4" />
+                    </motion.div>
+                    Start a Conversation
+                  </Button>
+                </motion.div>
+                <motion.div whileHover="hovered">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => window.open(URLS.LINKED_IN, "_blank")}
+                    className="glass border-white/20 text-white hover:bg-white/10 hover:shadow-lg transition-all duration-300 group"
+                  >
+                    <motion.div variants={childVariants} className="mr-2">
+                      <Linkedin className="w-4 h-4" />
+                    </motion.div>
+                    Connect on LinkedIn
+                  </Button>
+                </motion.div>
               </div>
             </CardContent>
           </Card>

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { URLS } from "../constants/constants";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Button } from "./ui/button";
 
@@ -26,7 +27,12 @@ export function Hero() {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById(sectionId);
+
+    if (element) {
+      const offsetTop = element.offsetTop;
+      window.scrollTo({ top: offsetTop, behavior: "smooth" });
+    }
   };
 
   const skills = [
@@ -188,13 +194,17 @@ export function Hero() {
                 {[
                   {
                     icon: Linkedin,
-                    href: "https://linkedin.com/in/bhavin-gunjariya",
+                    href: URLS.LINKED_IN,
                     color: "hover:text-blue-400",
                   },
-                  { icon: GithubIcon, href: "#", color: "hover:text-gray-300" },
+                  {
+                    icon: GithubIcon,
+                    href: URLS.GITHUB,
+                    color: "hover:text-gray-300",
+                  },
                   {
                     icon: Phone,
-                    href: "tel:+919033660048",
+                    href: URLS.PHONE_NUMBER,
                     color: "hover:text-green-400",
                   },
                 ].map(({ icon: Icon, href, color }, index) => (
@@ -204,6 +214,7 @@ export function Hero() {
                     target={href.startsWith("http") ? "_blank" : undefined}
                     whileHover={{ scale: 1.2, rotate: 5 }}
                     whileTap={{ scale: 0.9 }}
+                    transition={{ delay: -1 }}
                     className={`w-10 h-10 glass rounded-full flex items-center justify-center text-white/60 ${color} transition-all duration-300 hover:shadow-lg`}
                   >
                     <Icon className="w-4 h-4" />
@@ -240,34 +251,34 @@ export function Hero() {
                     alt="Modern Developer Workspace"
                     className="w-full h-96 object-cover rounded-2xl"
                   />
-
-                  {/* Floating Stats */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 1.2 }}
-                    className="absolute -top-4 -left-4 glass rounded-2xl p-4"
-                  >
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-gradient">2+</div>
-                      <div className="text-xs text-white/60">Years Exp</div>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 1.4 }}
-                    className="absolute -bottom-4 -right-4 glass rounded-2xl p-4"
-                  >
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-gradient-secondary">
-                        10+
-                      </div>
-                      <div className="text-xs text-white/60">Projects</div>
-                    </div>
-                  </motion.div>
                 </div>
+
+                {/* Floating Stats */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 1.2 }}
+                  className="absolute -top-4 -left-4 glass rounded-2xl p-4"
+                >
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gradient">2+</div>
+                    <div className="text-xs text-white/60">Years Exp</div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 1.4 }}
+                  className="absolute -bottom-4 -right-4 glass rounded-2xl p-4"
+                >
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gradient-secondary">
+                      10+
+                    </div>
+                    <div className="text-xs text-white/60">Projects</div>
+                  </div>
+                </motion.div>
               </motion.div>
 
               {/* Tech Stack Indicators */}
@@ -275,7 +286,7 @@ export function Hero() {
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 1.6 }}
-                className="absolute -top-8 right-8 glass rounded-full p-3"
+                className="absolute -top-8 right-8 glass rounded-full p-3 z-10"
               >
                 <Smartphone className="w-6 h-6 text-primary" />
               </motion.div>
