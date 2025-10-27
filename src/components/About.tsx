@@ -79,7 +79,7 @@ export function About() {
               About Me
             </span>
           </motion.div>
-          <h2 className="text-3xl md:text-5xl text-gradient mb-4">
+          <h2 className="text-3xl leading-relaxed md:text-5xl text-gradient mb-4">
             Crafting Digital Experiences
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -289,7 +289,7 @@ export function About() {
                       >
                         <motion.div
                           variants={childVariants}
-                          transition={{ delay: -0 }}
+                          transition={{ delay: 0 }}
                           className="w-1.5 h-1.5 gradient-primary rounded-full mt-3 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all"
                         />
                         <span className="text-white/70 group-hover:text-white transition-colors">

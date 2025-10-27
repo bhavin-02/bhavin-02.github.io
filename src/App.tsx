@@ -1,44 +1,19 @@
-import { useState } from "react";
-import { About } from "./components/About";
-import { Contact } from "./components/Contact";
-import { Experience } from "./components/Experience";
-import { Hero } from "./components/Hero";
-import { ModernNavigation } from "./components/ModernNavigation";
-import { ProjectDetail } from "./components/ProjectDetail";
-import { Projects } from "./components/Projects";
-import { Skills } from "./components/Skills";
-import SmoothScroll from "./components/SmoothScroll";
-import { getProjectById } from "./data/projectsData";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ReactLenis from "lenis/react";
+import { HomePage } from "./pages/HomePage";
+import { ProjectDetailPage } from "./pages/ProjectDetailPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 export default function App() {
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
-    null
-  );
-
-  const selectedProject = selectedProjectId
-    ? getProjectById(selectedProjectId)
-    : null;
-
-  if (selectedProject) {
-    return (
-      <ProjectDetail
-        project={selectedProject}
-        onBack={() => setSelectedProjectId(null)}
-      />
-    );
-  }
-
   return (
-    <div className="bg-background relative min-h-screen">
-      <ModernNavigation />
-      <SmoothScroll>
-        <Hero />
-        <About />
-        <Experience />
-        <Projects onProjectClick={setSelectedProjectId} />
-        <Skills />
-        <Contact />
-      </SmoothScroll>
-    </div>
+    <ReactLenis root>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/project/:id" element={<ProjectDetailPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Router>
+    </ReactLenis>
   );
 }

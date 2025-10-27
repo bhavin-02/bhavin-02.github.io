@@ -166,7 +166,7 @@ export function Experience() {
               Professional Journey
             </span>
           </motion.div>
-          <h2 className="text-3xl md:text-5xl text-gradient mb-4">
+          <h2 className="text-3xl leading-relaxed md:text-5xl text-gradient mb-4">
             Experience & Growth
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto text-lg">

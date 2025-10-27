@@ -1,4 +1,5 @@
 import {
+  CarFront,
   CreditCard,
   Home,
   type LucideIcon,
@@ -10,6 +11,7 @@ import {
 
 export interface Project {
   id: string;
+  heroImage: string;
   title: string;
   shortTitle: string;
   period: string;
@@ -21,6 +23,7 @@ export interface Project {
     description: string;
   }[];
   techStack: string[];
+  mobileSpecificFeatures?: string[];
   techDetails: {
     name: string;
     purpose: string;
@@ -48,6 +51,311 @@ export interface Project {
 }
 
 export const projectsData: Project[] = [
+  {
+    id: "ras",
+    heroImage:
+      "https://images.unsplash.com/photo-1600320254374-ce2d293c324e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470",
+    title: "RAS – Rent A Self Drive Management System",
+    shortTitle: "RAS",
+    period: "Aug 2024 - Jan 2025",
+    description:
+      "Comprehensive car rental management platform with advanced analytics, multi-branch operations, and real-time business intelligence for streamlined fleet management.",
+    fullDescription:
+      "RAS (Rent A Self Drive) is a sophisticated enterprise-grade car rental management system that revolutionizes fleet operations through intelligent automation and data-driven insights. The platform provides end-to-end management of rental operations, from customer onboarding to vehicle maintenance, with advanced analytics and reporting capabilities. Built with modern web technologies, RAS offers seamless multi-branch management, real-time tracking, and comprehensive business intelligence tools that enable rental businesses to optimize their operations and maximize profitability.",
+    features: [
+      "Multi-branch rental operations with centralized management",
+      "Real-time dashboard with advanced analytics and KPI tracking",
+      "Comprehensive booking management with automated workflows",
+      "Customer relationship management with detailed profiles",
+      "Fleet management with maintenance scheduling and tracking",
+      "Financial reporting with revenue and profit analysis",
+      "Role-based access control with granular permissions",
+      "Advanced reporting system with export capabilities",
+    ],
+    detailedFeatures: [
+      {
+        title: "Intelligent Dashboard & Analytics",
+        description:
+          "Real-time business intelligence with interactive charts showing booking trends, revenue analysis, customer acquisition metrics, payment method distribution, and profit/loss tracking with year-over-year comparisons.",
+      },
+      {
+        title: "Multi-Branch Operations Management",
+        description:
+          "Centralized control over multiple rental locations with branch-specific analytics, inventory management, staff allocation, and performance tracking with seamless data synchronization.",
+      },
+      {
+        title: "Advanced Booking System",
+        description:
+          "Comprehensive booking management with advance reservations, real-time availability checking, automated pricing calculations, extension handling, and integrated payment processing.",
+      },
+      {
+        title: "Fleet & Maintenance Management",
+        description:
+          "Complete vehicle lifecycle management including maintenance scheduling, service tracking, availability optimization, and automated alerts for service requirements and renewals.",
+      },
+      {
+        title: "Customer Management System",
+        description:
+          "Detailed customer profiles with booking history, payment tracking, feedback management, and automated communication workflows for enhanced customer experience.",
+      },
+      {
+        title: "Financial Management & Reporting",
+        description:
+          "Comprehensive financial tracking with revenue analysis, expense management, profit calculations, tax reporting, and customizable financial reports with export capabilities.",
+      },
+    ],
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Redux Toolkit",
+      "Tailwind CSS",
+      "Ant Design",
+      "Material-UI",
+      "ApexCharts",
+      "Axios",
+    ],
+    techDetails: [
+      {
+        name: "Next.js 14 with App Router",
+        purpose:
+          "Modern React framework with server-side rendering and optimized performance",
+      },
+      {
+        name: "TypeScript",
+        purpose:
+          "Type-safe development with enhanced code quality and maintainability",
+      },
+      {
+        name: "Redux Toolkit",
+        purpose: "Efficient state management",
+      },
+      {
+        name: "Tailwind CSS + Component Libraries",
+        purpose:
+          "Responsive design system with pre-built components for rapid development",
+      },
+      {
+        name: "ApexCharts",
+        purpose:
+          "Interactive data visualization for business analytics and reporting",
+      },
+      {
+        name: "Advanced Authentication",
+        purpose:
+          "Role-based access control with granular permissions and secure routing",
+      },
+    ],
+    category: "Business Management",
+    icon: CarFront,
+    color: "gradient-accent",
+    status: "active",
+    challenges: [
+      {
+        title: "Complex Multi-Branch Data Management",
+        description:
+          "Managing real-time data synchronization across multiple branches while maintaining data consistency and performance.",
+        solution:
+          "Implemented efficient state management with Redux Toolkit and TanStack Query for optimized caching and real-time updates, with branch-specific data filtering and aggregation.",
+      },
+      {
+        title: "Advanced Analytics & Reporting",
+        description:
+          "Creating comprehensive business intelligence dashboards with complex data visualizations and real-time metrics.",
+        solution:
+          "Built interactive dashboard using ApexCharts with multiple chart types, real-time data updates, and responsive design. Implemented efficient data processing for year-over-year comparisons and trend analysis.",
+      },
+      {
+        title: "Role-Based Access Control",
+        description:
+          "Implementing granular permission system for different user roles (Admin, Employee, Manager) with secure route protection.",
+        solution:
+          "Developed custom permission hooks and middleware for route protection, with dynamic UI rendering based on user permissions and secure API access control.",
+      },
+      {
+        title: "Performance Optimization",
+        description:
+          "Ensuring fast load times and smooth user experience with large datasets and complex UI components.",
+        solution:
+          "Implemented code splitting, lazy loading, memoization techniques, and optimized bundle size. Used Next.js 14 features for enhanced performance and SEO.",
+      },
+    ],
+    impact: [
+      { metric: "Operational Efficiency", value: "85% ↑" },
+      { metric: "Data Processing Speed", value: "3x Faster" },
+      { metric: "User Experience Score", value: "4.9/5" },
+      { metric: "System Uptime", value: "99.8%" },
+    ],
+    role: "Frontend Developer",
+    team: "3 developers",
+    duration: "5+ months",
+    images: {
+      hero: "rental management dashboard",
+      screenshots: [
+        "analytics dashboard with charts",
+        "booking management interface",
+        "fleet management system",
+        "customer management portal",
+      ],
+    },
+  },
+  {
+    id: "ras-mobile",
+    title: "RAS – Rent A Self Drive Management System (Mobile App)",
+    shortTitle: "RAS Mobile",
+    period: "Aug 2024 - Jan 2025",
+    description:
+      "Enterprise-grade React Native mobile application for car rental management with real-time analytics, offline capabilities, and seamless field operations integration.",
+    fullDescription:
+      "RAS Mobile is a sophisticated React Native application that brings enterprise car rental management to mobile devices. Built with modern React Native architecture, the app provides field staff and managers with comprehensive tools for managing bookings, customer verification, vehicle inspections, and real-time business analytics. The application features offline-first architecture, advanced camera integration for document verification, and seamless synchronization with the web platform for unified business operations.",
+    features: [
+      "Real-time dashboard with business analytics and KPI tracking",
+      "Comprehensive booking management with on-field capabilities",
+      "Advanced customer verification with document scanning",
+      "Vehicle inspection and maintenance tracking",
+      "Offline-first architecture with data synchronization",
+      "Camera integration for photo/video documentation",
+      "Multi-branch operations with role-based access",
+      "Real-time notifications and status updates",
+    ],
+    detailedFeatures: [
+      {
+        title: "Mobile Dashboard & Analytics",
+        description:
+          "Real-time business intelligence dashboard showing booking trends, active rentals, expected closures, and sales data with percentage comparisons and payment method breakdowns optimized for mobile viewing.",
+      },
+      {
+        title: "Field Booking Management",
+        description:
+          "Complete booking lifecycle management including new bookings, advance reservations, booking modifications, extensions, and closures with real-time status updates and progress tracking.",
+      },
+      {
+        title: "Customer Verification System",
+        description:
+          "Advanced customer onboarding with Aadhaar verification, document scanning using device camera, photo capture, and comprehensive customer profile management with booking history.",
+      },
+      {
+        title: "Vehicle Management & Inspection",
+        description:
+          "Mobile vehicle inspection tools with photo/video documentation, maintenance scheduling, service tracking, and real-time availability updates with GPS integration.",
+      },
+      {
+        title: "Offline-First Architecture",
+        description:
+          "Robust offline capabilities with local data storage, automatic synchronization when online, and seamless user experience regardless of network connectivity status.",
+      },
+      {
+        title: "Advanced Camera Integration",
+        description:
+          "Professional camera functionality for document capture, vehicle inspection photos, damage documentation, and video recording with review capabilities and automatic upload.",
+      },
+    ],
+    techStack: [
+      "React Native",
+      "React",
+      "Redux Toolkit",
+      "RTK Query",
+      "React Navigation 6",
+      "TypeScript",
+      "React Native Camera",
+      "AsyncStorage",
+      "Lottie Animations",
+      "React Native Reanimated",
+    ],
+    techDetails: [
+      {
+        name: "React Native with New Architecture",
+        purpose:
+          "Latest React Native with Fabric renderer and TurboModules for enhanced performance and native integration",
+      },
+      {
+        name: "Redux Toolkit + RTK Query",
+        purpose:
+          "Efficient state management with automatic caching, background sync, and optimistic updates for seamless user experience",
+      },
+      {
+        name: "React Navigation 6 with Stack & Tab Navigation",
+        purpose:
+          "Advanced navigation system with deep linking, authentication flows, and smooth transitions",
+      },
+      {
+        name: "Advanced Camera Integration",
+        purpose:
+          "Professional camera functionality with document scanning, video recording, and media management capabilities",
+      },
+      {
+        name: "Offline-First Architecture",
+        purpose:
+          "AsyncStorage with automatic synchronization, network detection, and seamless offline/online transitions",
+      },
+      {
+        name: "Performance Optimizations",
+        purpose:
+          "Lazy loading, memoization, efficient re-renders, and optimized bundle size for smooth mobile experience",
+      },
+    ],
+    challenges: [
+      {
+        title: "Offline-First Architecture Implementation",
+        description:
+          "Building robust offline capabilities while maintaining data consistency and seamless synchronization across multiple data sources.",
+        solution:
+          "Implemented Redux Toolkit with RTK Query for intelligent caching, AsyncStorage for local persistence, and NetInfo for network state management with automatic retry mechanisms and conflict resolution.",
+      },
+      {
+        title: "Advanced Camera & Media Management",
+        description:
+          "Integrating professional camera functionality for document scanning, video recording, and media management with cross-platform compatibility.",
+        solution:
+          "Utilized React Native Camera with custom video recording, image picker integration, and built comprehensive media preview and management system with automatic compression and upload queuing.",
+      },
+      {
+        title: "Complex Navigation & State Management",
+        description:
+          "Managing complex navigation flows with authentication, role-based routing, and maintaining state across multiple screens and user sessions.",
+        solution:
+          "Implemented React Navigation 6 with custom authentication flows, Redux Toolkit for global state management, and session persistence with automatic logout and security features.",
+      },
+      {
+        title: "Performance Optimization for Large Datasets",
+        description:
+          "Ensuring smooth performance when handling large booking lists, customer data, and real-time updates on mobile devices.",
+        solution:
+          "Implemented FlatList optimizations, lazy loading, memoization techniques, and efficient data pagination with background refresh and intelligent caching strategies.",
+      },
+    ],
+    mobileSpecificFeatures: [
+      "Native camera integration for document verification",
+      "Offline data synchronization with conflict resolution",
+      "Push notifications for booking updates",
+      "GPS integration for location-based services",
+      "Biometric authentication support",
+      "Device storage optimization",
+      "Network-aware data loading",
+      "Cross-platform compatibility (iOS/Android)",
+    ],
+    impact: [
+      { metric: "Field Operations Efficiency", value: "90% ↑" },
+      { metric: "Mobile Response Time", value: "<2s" },
+      { metric: "Offline Capability", value: "100%" },
+      { metric: "User Adoption Rate", value: "95%" },
+    ],
+    role: "Lead Mobile Developer & Architecture Designer",
+    team: "3 developers",
+    duration: "5+ months",
+    keyAchievements: [
+      "Built enterprise-grade mobile app with 99.9% uptime",
+      "Implemented offline-first architecture supporting 100% functionality without internet",
+      "Achieved <2s app launch time with optimized bundle size",
+      "Integrated advanced camera features with 95% document recognition accuracy",
+      "Delivered cross-platform solution with shared 90% codebase",
+    ],
+    category: "Mobile Application Development",
+    platform: "React Native (iOS/Android)",
+    icon: CarFront,
+    color: "gradient-accent",
+    status: "active",
+  },
   {
     id: "klipzy",
     title: "Klipzy – Video Sharing Platform",
@@ -149,7 +457,7 @@ export const projectsData: Project[] = [
       { metric: "User Retention", value: "78%" },
     ],
     role: "Lead Mobile Developer",
-    team: "5 developers, 2 designers, 1 PM",
+    team: "5 developers",
     duration: "24 months (ongoing)",
     images: {
       hero: "video platform development",
@@ -161,64 +469,92 @@ export const projectsData: Project[] = [
     },
   },
   {
-    id: "ratnaalin",
-    title: "Ratnaalin – Payment Management",
-    shortTitle: "Ratnaalin",
+    id: "ratnaafin",
+    title: "Ratnaafin – NBFC Financial Platform",
+    shortTitle: "Ratnaafin",
     period: "Nov 2023 - Dec 2023",
     description:
-      "Comprehensive payment management system for handling all types of card transactions, bank accounts, and financial operations with enterprise-grade security.",
+      "Comprehensive NBFC (Non-Banking Financial Company) web platform for MSME loan services with advanced financial tools, admin management, and seamless user experience.",
     fullDescription:
-      "Ratnaalin is a sophisticated payment management platform that simplifies financial operations for individuals and businesses. With support for multiple payment methods, real-time transaction tracking, and advanced security features, Ratnaalin provides a comprehensive solution for managing finances in today's digital economy. The platform is designed with security and compliance at its core, implementing industry-standard encryption and following PCI-DSS guidelines.",
+      "Ratnaafin is a sophisticated financial technology platform designed specifically for MSMEs (Micro, Small & Medium Enterprises) seeking various loan products. The platform serves as a comprehensive digital gateway for businesses to access working capital loans, machinery loans, business loans, and specialized financing solutions. Built with modern web technologies, it features an intuitive user interface, real-time EMI calculations, document management, and a powerful admin dashboard for managing the entire loan lifecycle from application to approval.",
     features: [
-      "Multi-card payment processing with secure encryption",
-      "Bank account integration and management",
-      "Real-time transaction tracking and reporting",
-      "Expense categorization and budget management",
+      "Multi-product loan application system with 8+ loan types",
+      "Interactive EMI calculator with real-time calculations and visual charts",
+      "Comprehensive admin dashboard with role-based access control",
+      "Document upload and verification system with secure storage",
+      "Dynamic content management for blogs, FAQs, and branch locations",
+      "Advanced SEO optimization with sitemap generation and meta management",
     ],
     detailedFeatures: [
       {
-        title: "Unified Payment Gateway",
+        title: "Comprehensive Loan Portfolio",
         description:
-          "Support for credit cards, debit cards, digital wallets, and bank transfers with seamless switching and automatic routing to the best payment method based on transaction type.",
+          "Support for multiple loan products including Working Capital Loan, Machinery Loan, Business Loan, MSME Loan, Loan Against Property, Supply Chain Finance (Sales Invoice Discounting, Purchase Invoice, Dealer Finance, Vendor Finance), Revenue Based Finance, and Solar Loans with dedicated pages and customized application flows.",
       },
       {
-        title: "Enterprise-Grade Security",
+        title: "Advanced EMI Calculator",
         description:
-          "End-to-end encryption, biometric authentication, fraud detection with machine learning, and compliance with international security standards including PCI-DSS.",
+          "Interactive loan calculator with dynamic sliders for loan amount (₹5L-₹2Cr), interest rates (10-25%), and tenure (12-72 months). Features real-time calculations, pie chart visualizations, and detailed breakdowns of principal and interest components with instant EMI updates.",
       },
       {
-        title: "Smart Financial Insights",
+        title: "Robust Admin Management System",
         description:
-          "AI-powered spending analysis, automated categorization, budget tracking with alerts, and personalized recommendations for financial optimization.",
+          "Comprehensive dashboard for managing users, loan applications, blog content, branch locations, job postings, CRM operations, and system configurations. Includes role-based access control, data analytics, and reporting capabilities.",
       },
       {
-        title: "Multi-Bank Integration",
+        title: "Intelligent Application System",
         description:
-          "Direct integration with major banks for balance checking, transaction history, and fund transfers without leaving the app.",
+          "Multi-step loan application process with form validation, document upload functionality, eligibility verification, and automated routing. Includes thank-you pages, email notifications, and application tracking with real-time status updates.",
+      },
+      {
+        title: "Performance-Optimized Architecture",
+        description:
+          "Built with Next.js 15 App Router, featuring server-side rendering, dynamic imports, image optimization, lazy loading, and service worker implementation. Includes Redux state management, cookie consent, and advanced caching strategies.",
+      },
+      {
+        title: "Content Management & SEO",
+        description:
+          "Dynamic blog system with CKEditor integration, FAQ management, branch locator with map integration, social media sharing, newsletter subscriptions, and comprehensive SEO optimization with structured data and sitemap generation.",
       },
     ],
     techStack: [
-      "React Native",
-      "React Native Reanimated",
-      "Secure Storage",
-      "Payment APIs",
+      "Next.js 15",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "Material-UI",
+      "Redux Toolkit",
     ],
     techDetails: [
       {
-        name: "React Native",
-        purpose: "Native mobile experience with cross-platform code sharing",
+        name: "Next.js 15 & React 19",
+        purpose:
+          "Modern full-stack framework with App Router, server components, and advanced rendering capabilities",
       },
       {
-        name: "React Native Reanimated",
-        purpose: "Smooth animations for transaction flows and UI transitions",
+        name: "TypeScript",
+        purpose:
+          "Type-safe development with enhanced code quality and developer experience",
       },
       {
-        name: "Secure Storage",
-        purpose: "Encrypted local storage for sensitive financial data",
+        name: "Tailwind CSS & Material-UI",
+        purpose:
+          "Responsive design system with pre-built components and consistent styling",
       },
       {
-        name: "Payment APIs",
-        purpose: "Integration with Stripe, PayPal, and banking APIs",
+        name: "Redux Toolkit & Redux Persist",
+        purpose:
+          "Centralized state management with data persistence and optimistic updates",
+      },
+      {
+        name: "CKEditor 5 & ApexCharts",
+        purpose:
+          "Rich text editing for content management and interactive data visualizations",
+      },
+      {
+        name: "Axios & Crypto-js",
+        purpose:
+          "HTTP client for API communication and encryption for sensitive data handling",
       },
     ],
     category: "FinTech",
@@ -227,42 +563,43 @@ export const projectsData: Project[] = [
     status: "completed",
     challenges: [
       {
-        title: "Security Compliance",
+        title: "Complex Financial Calculations",
         description:
-          "Meeting stringent PCI-DSS compliance requirements while maintaining a smooth user experience was challenging.",
+          "Implementing accurate EMI calculations with multiple variables (loan amount, interest rates, tenure) while ensuring real-time updates and visual representations.",
         solution:
-          "Implemented a zero-knowledge architecture where sensitive card data never touches our servers. Used tokenization and vault services from certified payment processors.",
+          "Built a sophisticated calculation engine using mathematical formulas for compound interest, integrated with Material-UI sliders for smooth user interaction, and ApexCharts for visual data representation with optimized re-rendering.",
       },
       {
-        title: "Transaction Speed",
+        title: "Multi-Product Architecture",
         description:
-          "Users expected instant transaction confirmations, but payment processing typically involves multiple steps and external services.",
+          "Managing 8+ different loan products with unique eligibility criteria, documentation requirements, and application flows while maintaining code reusability.",
         solution:
-          "Created optimistic UI updates with rollback mechanisms, pre-authorized transactions where possible, and implemented a sophisticated caching layer for transaction status.",
+          "Implemented a modular component architecture with shared components for common functionality, dynamic routing with Next.js App Router, and configuration-driven product pages with reusable form components and validation logic.",
       },
       {
-        title: "Multi-Currency Support",
+        title: "Performance & SEO Optimization",
         description:
-          "Handling real-time currency conversions with accurate exchange rates across different payment providers.",
+          "Ensuring fast load times, optimal SEO performance, and smooth user experience across different devices and network conditions.",
         solution:
-          "Built an exchange rate aggregation service that polls multiple sources and uses the most favorable rate for users, with automatic fallbacks.",
+          "Leveraged Next.js 15 features including server components, dynamic imports, image optimization, and implemented comprehensive SEO strategy with structured data, sitemap generation, and performance monitoring with Web Vitals tracking.",
       },
     ],
     impact: [
-      { metric: "Transactions Processed", value: "$2M+" },
-      { metric: "Average Processing Time", value: "1.2s" },
-      { metric: "User Satisfaction", value: "4.8/5" },
-      { metric: "Fraud Prevention Rate", value: "99.7%" },
+      // { metric: "Loan Products Supported", value: "8+" },
+      // { metric: "Page Load Speed", value: "<2s" },
+      { metric: "Mobile Responsiveness", value: "100%" },
+      { metric: "SEO Performance Score", value: "95+" },
     ],
-    role: "Full-Stack Mobile Developer",
-    team: "3 developers, 1 designer, 1 security consultant",
+    role: "Frontend Developer",
+    team: "Solo developer",
     duration: "2 months",
     images: {
-      hero: "payment app interface",
+      hero: "NBFC loan platform interface",
       screenshots: [
-        "credit card payment",
-        "financial dashboard analytics",
-        "mobile banking app",
+        "EMI calculator with charts",
+        "loan application form",
+        "admin dashboard analytics",
+        "mobile responsive design",
       ],
     },
   },
@@ -361,7 +698,7 @@ export const projectsData: Project[] = [
       { metric: "Customer Rating", value: "4.7/5" },
     ],
     role: "Mobile Developer",
-    team: "4 developers, 2 designers, 1 PM",
+    team: "4 developers",
     duration: "2 months",
     images: {
       hero: "food delivery app",
@@ -468,7 +805,7 @@ export const projectsData: Project[] = [
       { metric: "Time to Decision", value: "-40%" },
     ],
     role: "Senior Mobile Developer",
-    team: "3 developers, 2 designers",
+    team: "3 developers",
     duration: "2 months",
     images: {
       hero: "modern architecture house",
@@ -569,7 +906,7 @@ export const projectsData: Project[] = [
       { metric: "Community Contributors", value: "25+" },
     ],
     role: "Creator & Lead Developer",
-    team: "Solo project with community contributors",
+    team: "Solo project",
     duration: "2 months (+ ongoing maintenance)",
     images: {
       hero: "ui design components",
@@ -672,7 +1009,7 @@ export const projectsData: Project[] = [
       { metric: "User Engagement", value: "18 min/session" },
     ],
     role: "Mobile Developer",
-    team: "5 developers, 3 designers, 1 ML engineer",
+    team: "5 developers",
     duration: "2 months",
     images: {
       hero: "fashion shopping mobile",

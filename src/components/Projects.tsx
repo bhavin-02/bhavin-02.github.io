@@ -1,5 +1,6 @@
 import { Calendar, ExternalLink, Smartphone } from "lucide-react";
 import { motion, type Variants } from "motion/react";
+import { URLS } from "../constants/constants";
 import { projectsData } from "../data/projectsData";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Badge } from "./ui/badge";
@@ -155,7 +156,7 @@ export function Projects({ onProjectClick }: ProjectsProps) {
   };
 
   const childVariants: Variants = {
-    hovered: { scale: 1.5, transition: { delay: -1 } },
+    hovered: { scale: 1.5 },
   };
 
   return (
@@ -197,7 +198,7 @@ export function Projects({ onProjectClick }: ProjectsProps) {
               Featured Work
             </span>
           </motion.div>
-          <h2 className="text-3xl md:text-5xl text-gradient mb-4">
+          <h2 className="text-3xl leading-relaxed md:text-5xl text-gradient mb-4">
             Project Showcase
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -342,7 +343,7 @@ export function Projects({ onProjectClick }: ProjectsProps) {
                           >
                             <motion.div
                               variants={childVariants}
-                              transition={{ delay: 0 }}
+                              transition={{ delay: -1 }}
                               className="w-1 h-1 gradient-secondary rounded-full mt-2 group-hover/item:shadow-sm group-hover/item:shadow-primary/50 transition-all"
                             />
                             <span>{feature}</span>
@@ -435,9 +436,7 @@ export function Projects({ onProjectClick }: ProjectsProps) {
                   size="lg"
                   className="glass border-white/20 text-white hover:bg-white/10 hover:shadow-lg transition-all duration-300"
                   onClick={() =>
-                    window.open(
-                      "mailto:bhavingj172@gmail.com?subject=Project Inquiry"
-                    )
+                    window.open(`mailto:${URLS.EMAIL}?subject=Project Inquiry`)
                   }
                 >
                   Get In Touch

@@ -56,10 +56,7 @@ export function ModernNavigation() {
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
-    if (element) {
-      const offsetTop = element.offsetTop;
-      window.scrollTo({ top: offsetTop, behavior: "smooth" });
-    }
+    element?.scrollIntoView({ behavior: "smooth" });
     setIsOpen(false);
   };
 

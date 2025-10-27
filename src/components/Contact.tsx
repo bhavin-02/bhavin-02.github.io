@@ -38,9 +38,7 @@ export function Contact() {
       const body = encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
       );
-      window.open(
-        `mailto:bhavingj172@gmail.com?subject=${subject}&body=${body}`
-      );
+      window.open(`mailto:${URLS.EMAIL}?subject=${subject}&body=${body}`);
       setIsSubmitting(false);
     }, 1000);
   };
@@ -58,16 +56,16 @@ export function Contact() {
     {
       icon: Mail,
       label: "Email",
-      value: "bhavingj172@gmail.com",
-      action: () => window.open("mailto:bhavingj172@gmail.com"),
+      value: URLS.EMAIL,
+      action: () => window.open(`mailto:${URLS.EMAIL}`),
       color: "text-blue-400",
       gradient: "gradient-primary",
     },
     {
       icon: Phone,
       label: "Phone",
-      value: "+91 903 366 0048",
-      action: () => window.open(URLS.PHONE_NUMBER),
+      value: URLS.PHONE_NUMBER,
+      action: () => window.open(`tel:${URLS.PHONE_NUMBER.replaceAll(" ", "")}`),
       color: "text-green-400",
       gradient: "gradient-secondary",
     },
@@ -167,7 +165,7 @@ export function Contact() {
               Let's Connect
             </span>
           </motion.div>
-          <h2 className="text-3xl md:text-5xl text-gradient mb-4">
+          <h2 className="text-3xl leading-relaxed md:text-5xl text-gradient mb-4">
             Get In Touch
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -475,13 +473,15 @@ export function Contact() {
                     {[
                       {
                         icon: Mail,
-                        action: () =>
-                          window.open("mailto:bhavingj172@gmail.com"),
-                        color: "hover:text-blue-400 hover:bg-blue-400/10",
+                        action: () => window.open(`mailto:${URLS.EMAIL}`),
+                        color: "hover:text-red-400 hover:bg-red-400/10",
                       },
                       {
                         icon: Phone,
-                        action: () => window.open(URLS.PHONE_NUMBER),
+                        action: () =>
+                          window.open(
+                            `tel:${URLS.PHONE_NUMBER.replaceAll(" ", "")}`
+                          ),
                         color: "hover:text-green-400 hover:bg-green-400/10",
                       },
                       {
@@ -546,7 +546,7 @@ export function Contact() {
                     size="lg"
                     onClick={() =>
                       window.open(
-                        "mailto:bhavingj172@gmail.com?subject=Project Inquiry"
+                        `mailto:${URLS.EMAIL}?subject=Project Inquiry`
                       )
                     }
                     className="gradient-primary hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group"

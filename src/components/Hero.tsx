@@ -27,12 +27,7 @@ export function Hero() {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-
-    if (element) {
-      const offsetTop = element.offsetTop;
-      window.scrollTo({ top: offsetTop, behavior: "smooth" });
-    }
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const skills = [
@@ -163,7 +158,7 @@ export function Hero() {
               className="flex flex-wrap gap-4"
             >
               <Button
-                onClick={() => window.open("mailto:bhavingj172@gmail.com")}
+                onClick={() => window.open(`mailto:${URLS.EMAIL}`)}
                 className="gradient-primary hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
                 size="lg"
               >
@@ -204,7 +199,7 @@ export function Hero() {
                   },
                   {
                     icon: Phone,
-                    href: URLS.PHONE_NUMBER,
+                    href: `tel:${URLS.PHONE_NUMBER.replaceAll(" ", "")}`,
                     color: "hover:text-green-400",
                   },
                 ].map(({ icon: Icon, href, color }, index) => (

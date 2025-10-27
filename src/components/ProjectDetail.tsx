@@ -4,12 +4,13 @@ import {
   CheckCircle2,
   Clock,
   Lightbulb,
+  Smartphone,
   Target,
   TrendingUp,
   Users,
   Zap,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { useEffect } from "react";
 import { type Project } from "../data/projectsData";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -40,19 +41,8 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 
   const statusConfig = getStatusConfig(project.status);
 
-  const heroImages: Record<string, string> = {
-    "video platform development":
-      "https://images.unsplash.com/photo-1726935068680-73cef7e8412b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aWRlbyUyMHBsYXRmb3JtJTIwZGV2ZWxvcG1lbnR8ZW58MXx8fHwxNzYwNTk0MDQ3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "payment app interface":
-      "https://images.unsplash.com/photo-1658953229625-aad99d7603b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwYXltZW50JTIwYXBwJTIwaW50ZXJmYWNlfGVufDF8fHx8MTc2MDU5NDA0OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "food delivery app":
-      "https://images.unsplash.com/photo-1730817403166-36f03bec781a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb29kJTIwZGVsaXZlcnklMjBhcHB8ZW58MXx8fHwxNzYwNTU2MTU1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "modern architecture house":
-      "https://images.unsplash.com/photo-1627141234469-24711efb373c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmUlMjBob3VzZXxlbnwxfHx8fDE3NjA1MzQ4MTB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "ui design components":
-      "https://images.unsplash.com/photo-1562601555-513820e5d0eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1aSUyMGRlc2lnbiUyMGNvbXBvbmVudHN8ZW58MXx8fHwxNzYwNTk0MDQ5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "fashion shopping mobile":
-      "https://images.unsplash.com/photo-1758520387491-f370ae7a1122?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwc2hvcHBpbmclMjBtb2JpbGV8ZW58MXx8fHwxNzYwNTI1MjUxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+  const childVariants: Variants = {
+    hovered: { scale: 1.25 },
   };
 
   return (
@@ -134,6 +124,7 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
               <div className="grid grid-cols-3 gap-4">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
+                  transition={{ delay: 0, duration: 0.2 }}
                   className="glass rounded-xl p-4 text-center"
                 >
                   <Calendar className="w-5 h-5 text-primary mx-auto mb-2" />
@@ -144,23 +135,21 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
+                  transition={{ delay: 0, duration: 0.2 }}
                   className="glass rounded-xl p-4 text-center"
                 >
                   <Users className="w-5 h-5 text-accent mx-auto mb-2" />
                   <div className="text-xs text-white/60">Team</div>
-                  <div className="text-sm text-white mt-1">
-                    {project.team.split(",")[0]}
-                  </div>
+                  <div className="text-sm text-white mt-1">{project.team}</div>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
+                  transition={{ delay: 0, duration: 0.2 }}
                   className="glass rounded-xl p-4 text-center"
                 >
                   <Clock className="w-5 h-5 text-secondary mx-auto mb-2" />
                   <div className="text-xs text-white/60">Role</div>
-                  <div className="text-sm text-white mt-1">
-                    {project.role.split(" ")[0]}
-                  </div>
+                  <div className="text-sm text-white mt-1">{project.role}</div>
                 </motion.div>
               </div>
             </motion.div>
@@ -173,10 +162,7 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
             >
               <div className="glass rounded-3xl p-6 backdrop-blur-xl">
                 <ImageWithFallback
-                  src={
-                    heroImages[project.images.hero] ||
-                    heroImages["ui design components"]
-                  }
+                  src={project.heroImage}
                   alt={project.title}
                   className="w-full h-80 object-cover rounded-2xl"
                 />
@@ -243,7 +229,7 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
             viewport={{ once: true }}
           >
             <div className="flex items-center gap-2 mb-8">
-              <Target className="w-6 h-6 text-accent" />
+              <Target className="w-6 h-6 text-gradient-secondary" />
               <h2 className="text-3xl text-gradient-secondary">
                 Technology Stack
               </h2>
@@ -257,8 +243,9 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                   viewport={{ once: true }}
+                  className="h-auto"
                 >
-                  <Card className="glass border-white/10 hover:border-primary/30 transition-all duration-300">
+                  <Card className="glass h-full border-white/10 hover:border-primary/30 transition-all duration-300">
                     <CardContent className="p-6">
                       <h3 className="text-white mb-2">{tech.name}</h3>
                       <p className="text-white/60 text-sm">{tech.purpose}</p>
@@ -268,6 +255,46 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
               ))}
             </div>
           </motion.div>
+
+          {/* Mobile Specific Features */}
+          {project.mobileSpecificFeatures && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-2 mb-8">
+                <Smartphone className="w-6 h-6 text-primary" />
+                <h2 className="text-3xl text-gradient">
+                  Mobile-Specific Features
+                </h2>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                {project.mobileSpecificFeatures.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    whileHover="hovered"
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    viewport={{ once: true }}
+                    className="group"
+                  >
+                    <div className="flex items-center gap-3 p-4 glass rounded-lg border-white/10 hover:border-secondary/30 transition-all duration-300">
+                      <motion.div
+                        variants={childVariants}
+                        className={`w-2 h-2 ${project.color} rounded-full`}
+                      />
+                      <span className="text-white/80 group-hover:text-white transition-colors text-sm">
+                        {feature}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           {/* Challenges & Solutions */}
           <motion.div
@@ -341,7 +368,10 @@ export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
                   key={index}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { delay: 0, duration: 0.3 },
+                  }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                   viewport={{ once: true }}
                 >

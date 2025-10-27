@@ -166,7 +166,7 @@ export function Skills() {
               Skills & Expertise
             </span>
           </motion.div>
-          <h2 className="text-3xl md:text-5xl text-gradient mb-4">
+          <h2 className="text-3xl leading-relaxed md:text-5xl text-gradient mb-4">
             Technical Mastery
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto text-lg">
@@ -199,9 +199,14 @@ export function Skills() {
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      transition: { duration: 0.5, delay: index * 0.1 },
+                    }}
                     whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    transition={{ delay: 0, duration: 0.1 }}
                     viewport={{ once: true }}
                   >
                     <Card className="h-full glass border-white/10 hover:border-white/20 transition-all duration-500 group">
