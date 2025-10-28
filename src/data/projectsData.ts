@@ -44,17 +44,13 @@ export interface Project {
   role: string;
   team: string;
   duration: string;
-  images: {
-    hero: string;
-    screenshots: string[];
-  };
 }
 
 export const projectsData: Project[] = [
   {
     id: "ras",
     heroImage:
-      "https://images.unsplash.com/photo-1600320254374-ce2d293c324e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470",
+      "https://images.unsplash.com/photo-1685091955352-4bb8796aef12?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1071",
     title: "RAS – Rent A Self Drive Management System",
     shortTitle: "RAS",
     period: "Aug 2024 - Jan 2025",
@@ -183,26 +179,16 @@ export const projectsData: Project[] = [
     impact: [
       { metric: "Operational Efficiency", value: "85% ↑" },
       { metric: "Data Processing Speed", value: "3x Faster" },
-      { metric: "User Experience Score", value: "4.9/5" },
-      { metric: "System Uptime", value: "99.8%" },
     ],
     role: "Frontend Developer",
     team: "3 developers",
     duration: "5+ months",
-    images: {
-      hero: "rental management dashboard",
-      screenshots: [
-        "analytics dashboard with charts",
-        "booking management interface",
-        "fleet management system",
-        "customer management portal",
-      ],
-    },
   },
   {
     id: "ras-mobile",
-    title: "RAS – Rent A Self Drive Management System (Mobile App)",
-    shortTitle: "RAS Mobile",
+    title:
+      "RAS – Rent A Self Drive Management System (Mobile App for iOS/Android)",
+    shortTitle: "RAS Mobile (iOS/Android)",
     period: "Aug 2024 - Jan 2025",
     description:
       "Enterprise-grade React Native mobile application for car rental management with real-time analytics, offline capabilities, and seamless field operations integration.",
@@ -335,23 +321,15 @@ export const projectsData: Project[] = [
       "Cross-platform compatibility (iOS/Android)",
     ],
     impact: [
-      { metric: "Field Operations Efficiency", value: "90% ↑" },
+      { metric: "Operations Efficiency", value: "90% ↑" },
       { metric: "Mobile Response Time", value: "<2s" },
-      { metric: "Offline Capability", value: "100%" },
-      { metric: "User Adoption Rate", value: "95%" },
     ],
     role: "Lead Mobile Developer & Architecture Designer",
     team: "3 developers",
     duration: "5+ months",
-    keyAchievements: [
-      "Built enterprise-grade mobile app with 99.9% uptime",
-      "Implemented offline-first architecture supporting 100% functionality without internet",
-      "Achieved <2s app launch time with optimized bundle size",
-      "Integrated advanced camera features with 95% document recognition accuracy",
-      "Delivered cross-platform solution with shared 90% codebase",
-    ],
     category: "Mobile Application Development",
-    platform: "React Native (iOS/Android)",
+    heroImage:
+      "https://images.unsplash.com/photo-1565043666747-69f6646db940?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074",
     icon: CarFront,
     color: "gradient-accent",
     status: "active",
@@ -459,14 +437,8 @@ export const projectsData: Project[] = [
     role: "Lead Mobile Developer",
     team: "5 developers",
     duration: "24 months (ongoing)",
-    images: {
-      hero: "video platform development",
-      screenshots: [
-        "mobile app interface",
-        "video editing software",
-        "social media dashboard",
-      ],
-    },
+    heroImage:
+      "https://images.unsplash.com/photo-1623475329493-889804e377f8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1471",
   },
   {
     id: "ratnaafin",
@@ -593,15 +565,6 @@ export const projectsData: Project[] = [
     role: "Frontend Developer",
     team: "Solo developer",
     duration: "2 months",
-    images: {
-      hero: "NBFC loan platform interface",
-      screenshots: [
-        "EMI calculator with charts",
-        "loan application form",
-        "admin dashboard analytics",
-        "mobile responsive design",
-      ],
-    },
   },
   {
     id: "glover",
@@ -700,14 +663,6 @@ export const projectsData: Project[] = [
     role: "Mobile Developer",
     team: "4 developers",
     duration: "2 months",
-    images: {
-      hero: "food delivery app",
-      screenshots: [
-        "e-commerce mobile interface",
-        "delivery tracking map",
-        "shopping cart checkout",
-      ],
-    },
   },
   {
     id: "real-estate",
@@ -807,14 +762,6 @@ export const projectsData: Project[] = [
     role: "Senior Mobile Developer",
     team: "3 developers",
     duration: "2 months",
-    images: {
-      hero: "modern architecture house",
-      screenshots: [
-        "real estate app interface",
-        "property search map",
-        "virtual tour 360",
-      ],
-    },
   },
   {
     id: "perdiui",
@@ -908,14 +855,6 @@ export const projectsData: Project[] = [
     role: "Creator & Lead Developer",
     team: "Solo project",
     duration: "2 months (+ ongoing maintenance)",
-    images: {
-      hero: "ui design components",
-      screenshots: [
-        "mobile app ui kit",
-        "component library interface",
-        "design system documentation",
-      ],
-    },
   },
   {
     id: "fashion-app",
@@ -1011,14 +950,6 @@ export const projectsData: Project[] = [
     role: "Mobile Developer",
     team: "5 developers",
     duration: "2 months",
-    images: {
-      hero: "fashion shopping mobile",
-      screenshots: [
-        "clothing e-commerce app",
-        "fashion photography studio",
-        "mobile shopping experience",
-      ],
-    },
   },
 ];
 
