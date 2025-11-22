@@ -11,7 +11,7 @@ import {
 
 export interface Project {
   id: string;
-  heroImage: string;
+  heroImage?: string;
   title: string;
   shortTitle: string;
   period: string;
