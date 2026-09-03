@@ -1,438 +1,221 @@
 import {
   ArrowLeft,
-  Calendar,
-  CheckCircle2,
-  Clock,
-  Lightbulb,
-  Smartphone,
-  Target,
-  TrendingUp,
-  Users,
-  Zap,
+  ArrowRight,
+  Check,
+  ExternalLink,
+  Mail,
 } from "lucide-react";
-import { motion, type Variants } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect } from "react";
-import { type Project } from "../data/projectsData";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { useNavigate } from "react-router-dom";
+import { URLS } from "../constants/constants";
+import { accentMap, projectsData, type Project } from "../data/projectsData";
+import { Aurora, Reveal } from "./common/primitives";
 
-interface ProjectDetailProps {
+export function ProjectDetail({
+  project,
+  onBack,
+}: {
   project: Project;
   onBack: () => void;
-}
-
-export function ProjectDetail({ project, onBack }: ProjectDetailProps) {
+}) {
+  const navigate = useNavigate();
   const Icon = project.icon;
+  const a = accentMap[project.accent];
+
+  const index = projectsData.findIndex((p) => p.id === project.id);
+  const prev = projectsData[(index - 1 + projectsData.length) % projectsData.length];
+  const next = projectsData[(index + 1) % projectsData.length];
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const getStatusConfig = (status: string) => {
-    const configs = {
-      ongoing: { label: "In Progress", className: "gradient-primary" },
-      completed: { label: "Completed", className: "gradient-secondary" },
-      published: { label: "Published", className: "gradient-accent" },
-    };
-    return configs[status as keyof typeof configs] || configs.completed;
-  };
-
-  const statusConfig = getStatusConfig(project.status);
-
-  const childVariants: Variants = {
-    hovered: { scale: 1.25 },
-  };
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, [project.id]);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <motion.div
-            animate={{
-              rotate: [0, 360],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 30,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            className={`absolute top-20 right-10 w-96 h-96 ${project.color} rounded-full blur-3xl opacity-20`}
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        </div>
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      <Aurora className="opacity-60" />
+      <div className="absolute inset-0 bg-grid mask-fade-b opacity-40" />
 
-        <div className="max-w-6xl mx-auto px-4 py-20 relative z-10">
-          {/* Back Button */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Button
-              variant="outline"
-              onClick={onBack}
-              className="glass border-white/20 text-white hover:bg-white/10 mb-8 group"
+      <div className="relative z-10 mx-auto max-w-4xl px-5 py-16">
+        <button
+          onClick={onBack}
+          className="group inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm text-white/70 transition-colors hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+          Back
+        </button>
+
+        {/* header */}
+        <Reveal className="mt-8">
+          <div className="flex flex-wrap items-center gap-4">
+            <div
+              className="flex h-16 w-16 items-center justify-center rounded-2xl"
+              style={{
+                background: `linear-gradient(135deg, ${a.from}, ${a.to})`,
+                boxShadow: `0 10px 40px -10px ${a.glow}`,
+              }}
             >
-              <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-              Back to Projects
-            </Button>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left: Project Info */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  className={`w-14 h-14 ${project.color} rounded-2xl flex items-center justify-center shadow-lg`}
-                >
-                  <Icon className="w-7 h-7 text-white" />
-                </motion.div>
-                <div>
-                  <Badge
-                    variant="outline"
-                    className="border-primary/30 text-primary mb-2"
-                  >
-                    {project.category}
-                  </Badge>
-                  <Badge
-                    className={`${statusConfig.className} text-white border-none ml-2`}
-                  >
-                    {statusConfig.label}
-                  </Badge>
-                </div>
-              </div>
-
-              <h1 className="text-4xl md:text-5xl text-gradient mb-4">
-                {project.shortTitle}
-              </h1>
-
-              <p className="text-white/70 text-lg mb-6 leading-relaxed">
-                {project.fullDescription}
-              </p>
-
-              {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ delay: 0, duration: 0.2 }}
-                  className="glass rounded-xl p-4 text-center"
-                >
-                  <Calendar className="w-5 h-5 text-primary mx-auto mb-2" />
-                  <div className="text-xs text-white/60">Duration</div>
-                  <div className="text-sm text-white mt-1">
-                    {project.duration}
-                  </div>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ delay: 0, duration: 0.2 }}
-                  className="glass rounded-xl p-4 text-center"
-                >
-                  <Users className="w-5 h-5 text-accent mx-auto mb-2" />
-                  <div className="text-xs text-white/60">Team</div>
-                  <div className="text-sm text-white mt-1">{project.team}</div>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ delay: 0, duration: 0.2 }}
-                  className="glass rounded-xl p-4 text-center"
-                >
-                  <Clock className="w-5 h-5 text-secondary mx-auto mb-2" />
-                  <div className="text-xs text-white/60">Role</div>
-                  <div className="text-sm text-white mt-1">{project.role}</div>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            {/* Right: Hero Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="glass rounded-3xl p-6 backdrop-blur-xl">
-                <ImageWithFallback
-                  src={project.heroImage}
-                  alt={project.title}
-                  className="w-full h-80 object-cover rounded-2xl"
-                />
-              </div>
-            </motion.div>
+              <Icon className="h-8 w-8 text-white" />
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full bg-white/5 px-3 py-1 text-xs text-white/60">
+                {project.platform}
+              </span>
+              <span
+                className="rounded-full px-3 py-1 text-xs font-medium"
+                style={{ background: `${a.from}22`, color: a.text }}
+              >
+                {project.category}
+              </span>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto space-y-16">
-          {/* Detailed Features */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-2 mb-8">
-              <Zap className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl text-gradient">Key Features</h2>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              {project.detailedFeatures.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
+          <h1 className="mt-6 text-3xl font-bold leading-tight text-white md:text-5xl">
+            {project.title}
+          </h1>
+          <p className="mt-3 text-lg text-white/60">{project.tagline}</p>
+
+          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-white/45">
+            <span>
+              <span className="text-white/70">Company:</span> {project.company}
+            </span>
+            <span>
+              <span className="text-white/70">Timeline:</span> {project.period}
+            </span>
+            <span>
+              <span className="text-white/70">Domain:</span> {project.domain}
+            </span>
+          </div>
+        </Reveal>
+
+        {/* metrics */}
+        {project.metrics && (
+          <Reveal delay={0.1} className="mt-10 grid grid-cols-3 gap-4">
+            {project.metrics.map((m) => (
+              <div
+                key={m.label}
+                className="rounded-2xl glass p-5 text-center"
+              >
+                <div
+                  className="text-2xl font-bold md:text-3xl"
+                  style={{ color: a.text }}
                 >
-                  <Card className="h-full glass border-white/10 hover:border-white/20 transition-all duration-300 group">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-3 mb-3">
-                        <motion.div
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.5 }}
-                          className={`w-8 h-8 ${project.color} rounded-lg flex items-center justify-center shrink-0 mt-1`}
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-white" />
-                        </motion.div>
-                        <div>
-                          <h3 className="text-lg text-white mb-2 group-hover:text-gradient transition-all">
-                            {feature.title}
-                          </h3>
-                          <p className="text-white/60 text-sm leading-relaxed">
-                            {feature.description}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Technology Stack */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-2 mb-8">
-              <Target className="w-6 h-6 text-gradient-secondary" />
-              <h2 className="text-3xl text-gradient-secondary">
-                Technology Stack
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {project.techDetails.map((tech, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                  className="h-auto"
-                >
-                  <Card className="glass h-full border-white/10 hover:border-primary/30 transition-all duration-300">
-                    <CardContent className="p-6">
-                      <h3 className="text-white mb-2">{tech.name}</h3>
-                      <p className="text-white/60 text-sm">{tech.purpose}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Mobile Specific Features */}
-          {project.mobileSpecificFeatures && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-2 mb-8">
-                <Smartphone className="w-6 h-6 text-primary" />
-                <h2 className="text-3xl text-gradient">
-                  Mobile-Specific Features
-                </h2>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                {project.mobileSpecificFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    whileHover="hovered"
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    viewport={{ once: true }}
-                    className="group"
-                  >
-                    <div className="flex items-center gap-3 p-4 glass rounded-lg border-white/10 hover:border-secondary/30 transition-all duration-300">
-                      <motion.div
-                        variants={childVariants}
-                        className={`w-2 h-2 ${project.color} rounded-full`}
-                      />
-                      <span className="text-white/80 group-hover:text-white transition-colors text-sm">
-                        {feature}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* Challenges & Solutions */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-2 mb-8">
-              <Lightbulb className="w-6 h-6 text-secondary" />
-              <h2 className="text-3xl text-gradient-accent">
-                Challenges & Solutions
-              </h2>
-            </div>
-            <div className="space-y-6">
-              {project.challenges.map((challenge, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className="glass border-white/10 overflow-hidden group hover:border-white/20 transition-all duration-300">
-                    <CardHeader className="relative">
-                      <div
-                        className={`absolute left-0 top-0 bottom-0 w-1 ${project.color}`}
-                      />
-                      <h3 className="text-xl text-white pl-6 group-hover:text-gradient transition-all">
-                        {challenge.title}
-                      </h3>
-                    </CardHeader>
-                    <CardContent className="pl-6 pr-6 pb-6">
-                      <div className="mb-4">
-                        <div className="text-xs text-primary mb-2 uppercase tracking-wide">
-                          Challenge
-                        </div>
-                        <p className="text-white/70 text-sm leading-relaxed">
-                          {challenge.description}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="text-xs text-accent mb-2 uppercase tracking-wide">
-                          Solution
-                        </div>
-                        <p className="text-white/70 text-sm leading-relaxed">
-                          {challenge.solution}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Impact & Results */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-2 mb-8">
-              <TrendingUp className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl text-gradient">Impact & Results</h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {project.impact.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  whileHover={{
-                    scale: 1.1,
-                    transition: { delay: 0, duration: 0.3 },
-                  }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className="glass border-white/10 hover:border-primary/30 transition-all duration-300 text-center">
-                    <CardContent className="p-6">
-                      <div className="text-3xl text-gradient mb-2">
-                        {item.value}
-                      </div>
-                      <div className="text-sm text-white/60">{item.metric}</div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Call to Action */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <Card className="glass border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5">
-              <CardContent className="p-12">
-                <h3 className="text-3xl text-gradient mb-4">
-                  Interested in Similar Projects?
-                </h3>
-                <p className="text-white/70 mb-8 max-w-2xl mx-auto text-lg">
-                  Let's collaborate and build something extraordinary together.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    size="lg"
-                    className="gradient-primary hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
-                    onClick={() => {
-                      onBack();
-                      setTimeout(() => {
-                        document
-                          .getElementById("contact")
-                          ?.scrollIntoView({ behavior: "smooth" });
-                      }, 100);
-                    }}
-                  >
-                    Get In Touch
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="glass border-white/20 text-white hover:bg-white/10"
-                    onClick={onBack}
-                  >
-                    View All Projects
-                  </Button>
+                  {m.value}
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                <div className="mt-1 text-xs text-white/50">{m.label}</div>
+              </div>
+            ))}
+          </Reveal>
+        )}
+
+        {/* overview */}
+        <Reveal delay={0.15} className="mt-12">
+          <h2 className="text-xl font-semibold text-white">Overview</h2>
+          <p className="mt-4 text-base leading-relaxed text-white/65">
+            {project.overview}
+          </p>
+        </Reveal>
+
+        {/* highlights */}
+        <Reveal delay={0.2} className="mt-12">
+          <h2 className="text-xl font-semibold text-white">
+            Key features & contributions
+          </h2>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            {project.highlights.map((h, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="flex gap-3 rounded-xl glass p-4"
+              >
+                <span
+                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                  style={{ background: `${a.from}22`, color: a.text }}
+                >
+                  <Check className="h-3.5 w-3.5" />
+                </span>
+                <span className="text-sm leading-relaxed text-white/70">
+                  {h}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* tech stack */}
+        <Reveal delay={0.25} className="mt-12">
+          <h2 className="text-xl font-semibold text-white">Tech stack</h2>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {project.techStack.map((t) => (
+              <span
+                key={t}
+                className="rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2 text-sm text-white/75"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* CTA */}
+        <Reveal delay={0.3} className="mt-14 rounded-2xl border-gradient p-8 text-center">
+          <h3 className="text-2xl font-bold text-white">
+            Like what you see?
+          </h3>
+          <p className="mx-auto mt-2 max-w-md text-sm text-white/55">
+            I'd love to talk about how I can help build your next product.
+          </p>
+          <a
+            href={`mailto:${URLS.EMAIL}`}
+            className="group relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full px-7 py-3.5 font-semibold text-white glow-primary"
+          >
+            <span className="absolute inset-0 gradient-primary bg-[length:200%_auto] animate-gradient" />
+            <Mail className="relative z-10 h-4 w-4" />
+            <span className="relative z-10">Get in touch</span>
+          </a>
+        </Reveal>
+
+        {/* prev / next */}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2">
+          <button
+            onClick={() => navigate(`/project/${prev.id}`)}
+            className="group flex items-center gap-3 rounded-2xl glass p-5 text-left transition-colors hover:bg-white/[0.06]"
+          >
+            <ArrowLeft className="h-5 w-5 text-white/50 transition-transform group-hover:-translate-x-1" />
+            <div>
+              <div className="text-xs text-white/40">Previous</div>
+              <div className="text-sm font-medium text-white">
+                {prev.shortTitle}
+              </div>
+            </div>
+          </button>
+          <button
+            onClick={() => navigate(`/project/${next.id}`)}
+            className="group flex items-center justify-end gap-3 rounded-2xl glass p-5 text-right transition-colors hover:bg-white/[0.06]"
+          >
+            <div>
+              <div className="text-xs text-white/40">Next</div>
+              <div className="text-sm font-medium text-white">
+                {next.shortTitle}
+              </div>
+            </div>
+            <ArrowRight className="h-5 w-5 text-white/50 transition-transform group-hover:translate-x-1" />
+          </button>
         </div>
-      </section>
+
+        <a
+          href={URLS.GITHUB}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-8 inline-flex items-center gap-2 text-sm text-white/45 transition-colors hover:text-white"
+        >
+          <ExternalLink className="h-4 w-4" />
+          More on GitHub
+        </a>
+      </div>
     </div>
   );
 }

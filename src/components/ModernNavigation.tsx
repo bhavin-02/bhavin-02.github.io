@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "./ui/button";
 
 export function ModernNavigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,34 +28,27 @@ export function ModernNavigation() {
   );
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = navItems.map((item) => item.id);
-      const scrollPosition = window.scrollY + 100;
+    // IntersectionObserver instead of a scroll handler — no per-frame layout
+    // reads, so scrolling stays smooth.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 1] }
+    );
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetHeight = element.offsetHeight;
-
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    navItems.forEach((item) => {
+      const el = document.getElementById(item.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
   }, [navItems]);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     setIsOpen(false);
   };
 
@@ -67,123 +59,104 @@ export function ModernNavigation() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 hidden md:block"
+        className="fixed left-1/2 top-6 z-50 hidden -translate-x-1/2 md:block"
       >
-        <div className="glass rounded-full px-6 py-3">
-          <div className="flex items-center space-x-2">
+        <div className="glass-blur rounded-full px-2 py-2">
+          <div className="flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
+              const active = activeSection === item.id;
               return (
-                <Button
+                <button
                   key={item.id}
-                  variant={activeSection === item.id ? "default" : "ghost"}
-                  size="sm"
                   onClick={() => scrollToSection(item.id)}
-                  className={`relative rounded-full transition-all duration-300 ${
-                    activeSection === item.id
-                      ? "gradient-primary text-white shadow-lg"
-                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    active
+                      ? "text-primary-foreground"
+                      : "text-white/65 hover:text-white"
                   }`}
                 >
-                  <Icon className="w-4 h-4 mr-2" />
-                  {item.label}
-                  {activeSection === item.id && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute inset-0 gradient-primary rounded-full -z-10"
+                  {active && (
+                    <motion.span
+                      layoutId="activeNav"
+                      className="absolute inset-0 gradient-primary rounded-full"
                       transition={{ type: "spring", duration: 0.6 }}
                     />
                   )}
-                </Button>
+                  <Icon className="relative z-10 h-4 w-4" />
+                  <span className="relative z-10">{item.label}</span>
+                </button>
               );
             })}
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Navigation Toggle */}
-      <motion.div
+      {/* Mobile toggle */}
+      <motion.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="fixed top-6 right-6 z-50 md:hidden"
+        onClick={() => setIsOpen((v) => !v)}
+        aria-label="Toggle menu"
+        className="glass-blur fixed right-5 top-5 z-50 flex h-11 w-11 items-center justify-center rounded-full text-white md:hidden"
       >
-        <Button
-          onClick={() => setIsOpen(!isOpen)}
-          size="sm"
-          className="glass rounded-full p-3 text-white hover:bg-white/20"
-        >
-          <AnimatePresence mode="wait">
-            {isOpen ? (
-              <motion.div
-                key="close"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <X className="w-5 h-5" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="menu"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Menu className="w-5 h-5" />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Button>
-      </motion.div>
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.span
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X className="h-5 w-5" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="menu"
+              initial={{ rotate: 90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Menu className="h-5 w-5" />
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.button>
 
-      {/* Mobile Navigation Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            initial={{ opacity: 0, scale: 0.9, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            exit={{ opacity: 0, scale: 0.9, y: -20 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed top-20 right-6 z-40 md:hidden"
+            className="fixed right-5 top-20 z-40 md:hidden"
           >
-            <div className="glass rounded-2xl p-4 min-w-48">
-              <div className="space-y-2">
+            <div className="glass-blur min-w-52 rounded-2xl p-3">
+              <div className="space-y-1">
                 {navItems.map((item, index) => {
                   const Icon = item.icon;
+                  const active = activeSection === item.id;
                   return (
-                    <motion.div
+                    <motion.button
                       key={item.id}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      transition={{ duration: 0.3, delay: index * 0.06 }}
+                      onClick={() => scrollToSection(item.id)}
+                      className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
+                        active
+                          ? "gradient-primary text-primary-foreground"
+                          : "text-white/70 hover:bg-white/5 hover:text-white"
+                      }`}
                     >
-                      <Button
-                        key={item.id}
-                        variant={
-                          activeSection === item.id ? "default" : "ghost"
-                        }
-                        size="sm"
-                        onClick={() => scrollToSection(item.id)}
-                        className={`relative w-full justify-start rounded-xl transition-all duration-300 ${
-                          activeSection === item.id
-                            ? "gradient-primary text-white shadow-lg"
-                            : "text-white/70 hover:text-white hover:bg-white/10"
-                        }`}
-                      >
-                        <Icon className="w-4 h-4 mr-2" />
-                        {item.label}
-                        {activeSection === item.id && (
-                          <motion.div
-                            layoutId="activeIndicator"
-                            className="absolute inset-0 gradient-primary rounded-full -z-10"
-                            transition={{ type: "spring", duration: 0.6 }}
-                          />
-                        )}
-                      </Button>
-                    </motion.div>
+                      <Icon className="h-4 w-4" />
+                      {item.label}
+                    </motion.button>
                   );
                 })}
               </div>

@@ -1,343 +1,285 @@
 import {
-  ArrowDown,
-  Code,
-  GithubIcon,
+  ArrowUpRight,
+  Download,
+  Github,
   Linkedin,
   Mail,
+  MapPin,
   Phone,
-  Smartphone,
-  Sparkles,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { URLS } from "../constants/constants";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Button } from "./ui/button";
+import { marqueeSkills, profile } from "../data/portfolio";
+import { Aurora, Magnetic } from "./common/primitives";
+
+const socials = [
+  { icon: Linkedin, href: URLS.LINKED_IN, label: "LinkedIn" },
+  { icon: Github, href: URLS.GITHUB, label: "GitHub" },
+  { icon: Mail, href: `mailto:${URLS.EMAIL}`, label: "Email" },
+  {
+    icon: Phone,
+    href: `tel:${URLS.PHONE_NUMBER.replaceAll(" ", "")}`,
+    label: "Phone",
+  },
+];
+
+const codeLines = [
+  { t: "const dev = {", c: "text-white/50" },
+  { t: '  name: "Bhavin Gunjariya",', c: "text-neon-cyan" },
+  { t: '  role: "React / RN Developer",', c: "text-neon-violet" },
+  { t: "  years: 4,", c: "text-neon-emerald" },
+  { t: "  apps: 15,", c: "text-neon-emerald" },
+  { t: '  stack: ["React", "Next.js",', c: "text-neon-amber" },
+  { t: '    "React Native", "TypeScript"],', c: "text-neon-amber" },
+  { t: "  shipsToProduction: true,", c: "text-neon-cyan" },
+  { t: "};", c: "text-white/50" },
+];
+
+const orbit = ["⚛️", "🚀", "📱", "⚡", "🎯", "✨"];
+
+function scrollTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
 
 export function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [roleIndex, setRoleIndex] = useState(0);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    const t = setInterval(
+      () => setRoleIndex((i) => (i + 1) % profile.roles.length),
+      2400
+    );
+    return () => clearInterval(t);
   }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const skills = [
-    "React",
-    "React Native",
-    "TypeScript",
-    "Node.js",
-    "Mobile Apps",
-  ];
-  const [currentSkill, setCurrentSkill] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSkill((prev) => (prev + 1) % skills.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [skills.length]);
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-16"
     >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        {/* Floating Orbs */}
-        <motion.div
-          animate={{
-            x: mousePosition.x * 0.02,
-            y: mousePosition.y * 0.02,
-          }}
-          transition={{ type: "spring", stiffness: 50, damping: 20 }}
-          className="absolute top-20 left-20 w-96 h-96 gradient-primary rounded-full blur-3xl opacity-20"
-        />
-        <motion.div
-          animate={{
-            x: mousePosition.x * -0.01,
-            y: mousePosition.y * -0.01,
-          }}
-          transition={{ type: "spring", stiffness: 30, damping: 20 }}
-          className="absolute bottom-20 right-20 w-80 h-80 gradient-secondary rounded-full blur-3xl opacity-20"
-        />
-        <motion.div
-          animate={{
-            x: mousePosition.x * 0.015,
-            y: mousePosition.y * 0.015,
-          }}
-          transition={{ type: "spring", stiffness: 40, damping: 20 }}
-          className="absolute top-1/2 left-1/2 w-64 h-64 gradient-accent rounded-full blur-3xl opacity-15"
-        />
+      <Aurora />
+      <div className="absolute inset-0 bg-grid mask-fade-b opacity-60" />
 
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Text Content */}
-          <div className="space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="space-y-6"
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="flex items-center gap-2 text-primary"
-              >
-                <Sparkles className="w-5 h-5" />
-                <span className="text-sm font-medium tracking-wider uppercase">
-                  Creative Developer
-                </span>
-              </motion.div>
-
-              <div className="space-y-4">
-                <motion.h1
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
-                >
-                  <span className="text-gradient">Bhavin</span>
-                  <br />
-                  <span className="text-white">Gunjariya</span>
-                </motion.h1>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                  className="text-xl md:text-2xl text-white/80 h-8 flex items-center gap-2"
-                >
-                  <Code className="w-6 h-6 text-primary" />
-                  <span>I build amazing </span>
-                  <motion.span
-                    key={currentSkill}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                    className="text-gradient font-semibold"
-                  >
-                    {skills[currentSkill]}
-                  </motion.span>
-                </motion.div>
-
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.7 }}
-                  className="text-lg text-white/70 leading-relaxed max-w-xl"
-                >
-                  Passionate React & React Native developer with 2+ years of
-                  experience crafting beautiful, performant mobile applications
-                  and web experiences that users love.
-                </motion.p>
-              </div>
-            </motion.div>
-
-            {/* Contact Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="flex flex-wrap gap-4"
-            >
-              <Button
-                onClick={() => window.open(`mailto:${URLS.EMAIL}`)}
-                className="gradient-primary hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
-                size="lg"
-              >
-                <Mail className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
-                Get In Touch
-              </Button>
-
-              <Button
-                variant="outline"
-                onClick={() => scrollToSection("projects")}
-                className="glass border-white/20 text-white hover:bg-white/10 hover:shadow-lg transition-all duration-300 group"
-                size="lg"
-              >
-                <ArrowDown className="w-4 h-4 mr-2 group-hover:translate-y-1 transition-transform" />
-                View Work
-              </Button>
-            </motion.div>
-
-            {/* Social Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-              className="flex items-center gap-4"
-            >
-              <span className="text-white/50 text-sm">Connect with me:</span>
-              <div className="flex gap-3">
-                {[
-                  {
-                    icon: Linkedin,
-                    href: URLS.LINKED_IN,
-                    color: "hover:text-blue-400",
-                  },
-                  {
-                    icon: GithubIcon,
-                    href: URLS.GITHUB,
-                    color: "hover:text-gray-300",
-                  },
-                  {
-                    icon: Phone,
-                    href: `tel:${URLS.PHONE_NUMBER.replaceAll(" ", "")}`,
-                    color: "hover:text-green-400",
-                  },
-                ].map(({ icon: Icon, href, color }, index) => (
-                  <motion.a
-                    key={index}
-                    href={href}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    whileHover={{ scale: 1.2, rotate: 5 }}
-                    whileTap={{ scale: 0.9 }}
-                    transition={{ delay: -1 }}
-                    className={`w-10 h-10 glass rounded-full flex items-center justify-center text-white/60 ${color} transition-all duration-300 hover:shadow-lg`}
-                  >
-                    <Icon className="w-4 h-4" />
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right Column - Visual Elements */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="relative"
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-5 lg:grid-cols-[1.05fr_0.95fr]">
+        {/* ---------------- Left ---------------- */}
+        <div>
+          <motion.span
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm text-white/75"
           >
-            <div className="relative">
-              {/* Main Image Container */}
-              <motion.div
-                animate={{
-                  y: [0, -10, 0],
-                  rotateX: [0, 5, 0],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="relative z-10"
-              >
-                <div className="glass rounded-3xl p-6 backdrop-blur-xl">
-                  <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1624948384140-e48e47087fad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkZXZlbG9wZXIlMjB3b3Jrc3BhY2UlMjBjb21wdXRlciUyMGNvZGluZ3xlbnwxfHx8fDE3NTk0ODYyMzF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                    alt="Modern Developer Workspace"
-                    className="w-full h-96 object-cover rounded-2xl"
-                  />
-                </div>
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-emerald opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-emerald" />
+            </span>
+            Available for new opportunities
+          </motion.span>
 
-                {/* Floating Stats */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 1.2 }}
-                  className="absolute -top-4 -left-4 glass rounded-2xl p-4"
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mt-6 text-5xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl"
+          >
+            <span className="block text-white/90">Hi, I'm</span>
+            <span className="text-gradient-animate">Bhavin Gunjariya</span>
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.25 }}
+            className="mt-5 flex items-center gap-3 text-xl font-medium text-white/80 sm:text-2xl"
+          >
+            <span className="font-mono text-neon-indigo">{"<"}</span>
+            <div className="relative h-8 overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={roleIndex}
+                  initial={{ y: 28, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -28, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="block bg-gradient-to-r from-neon-indigo via-neon-violet to-neon-cyan bg-clip-text font-semibold text-transparent"
                 >
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gradient">2+</div>
-                    <div className="text-xs text-white/60">Years Exp</div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 1.4 }}
-                  className="absolute -bottom-4 -right-4 glass rounded-2xl p-4"
-                >
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-gradient-secondary">
-                      10+
-                    </div>
-                    <div className="text-xs text-white/60">Projects</div>
-                  </div>
-                </motion.div>
-              </motion.div>
-
-              {/* Tech Stack Indicators */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 1.6 }}
-                className="absolute -top-8 right-8 glass rounded-full p-3 z-10"
-              >
-                <Smartphone className="w-6 h-6 text-primary" />
-              </motion.div>
-
-              {/* Background Decorative Elements */}
-              <div className="absolute inset-0 -z-10">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  className="absolute top-0 right-0 w-32 h-32 border border-primary/20 rounded-full"
-                />
-                <motion.div
-                  animate={{ rotate: -360 }}
-                  transition={{
-                    duration: 30,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  className="absolute bottom-0 left-0 w-24 h-24 border border-accent/20 rounded-full"
-                />
-              </div>
+                  {profile.roles[roleIndex]}
+                </motion.span>
+              </AnimatePresence>
             </div>
+            <span className="font-mono text-neon-indigo">{"/>"}</span>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="mt-6 max-w-xl text-base leading-relaxed text-white/60 md:text-lg"
+          >
+            {profile.summary}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.55 }}
+            className="mt-6 flex items-center gap-2 text-sm text-white/50"
+          >
+            <MapPin className="h-4 w-4 text-neon-violet" />
+            {profile.location}
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.65 }}
+            className="mt-8 flex flex-wrap items-center gap-4"
+          >
+            <Magnetic>
+              <button
+                onClick={() => scrollTo("projects")}
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-7 py-3.5 font-semibold text-white glow-primary transition-transform"
+              >
+                <span className="absolute inset-0 gradient-primary bg-[length:200%_auto] animate-gradient" />
+                <span className="relative z-10">View my work</span>
+                <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+            </Magnetic>
+
+            <Magnetic>
+              <a
+                href="/Bhavin-Gunjariya-Resume.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 font-semibold text-white/90 transition-colors hover:bg-white/10"
+              >
+                <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+                Résumé
+              </a>
+            </Magnetic>
+          </motion.div>
+
+          {/* Socials */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.8 }}
+            className="mt-8 flex items-center gap-3"
+          >
+            {socials.map(({ icon: Icon, href, label }) => (
+              <motion.a
+                key={label}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel="noreferrer"
+                aria-label={label}
+                whileHover={{ scale: 1.12, y: -3 }}
+                whileTap={{ scale: 0.94 }}
+                className="flex h-11 w-11 items-center justify-center rounded-full glass text-white/70 transition-colors hover:text-white"
+              >
+                <Icon className="h-5 w-5" />
+              </motion.a>
+            ))}
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* ---------------- Right — code card + orbit ---------------- */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
+          className="relative mx-auto hidden w-full max-w-md lg:block"
         >
+          {/* orbit ring */}
+          <div className="absolute inset-0 -m-6 animate-spin-slow">
+            {orbit.map((emoji, i) => {
+              const angle = (i / orbit.length) * Math.PI * 2;
+              const r = 47;
+              const x = 50 + Math.cos(angle) * r;
+              const y = 50 + Math.sin(angle) * r;
+              return (
+                <span
+                  key={i}
+                  className="absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl glass text-lg"
+                  style={{ left: `${x}%`, top: `${y}%` }}
+                >
+                  {emoji}
+                </span>
+              );
+            })}
+          </div>
+
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex flex-col items-center gap-2 cursor-pointer"
-            onClick={() => scrollToSection("about")}
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="relative rounded-2xl glass-strong p-5 glow-primary"
           >
-            <span className="text-white/40 text-sm">Scroll to explore</span>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <motion.div
-                animate={{ y: [0, 12, 0] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="w-1 h-3 bg-gradient-to-b from-primary to-transparent rounded-full mt-2"
-              />
+            {/* window chrome */}
+            <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+              <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+              <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+              <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+              <span className="ml-3 font-mono text-xs text-white/40">
+                developer.ts
+              </span>
             </div>
+            {/* code */}
+            <pre className="mt-4 overflow-hidden font-mono text-[13px] leading-6">
+              {codeLines.map((line, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.9 + i * 0.12, duration: 0.4 }}
+                  className={line.c}
+                >
+                  <span className="mr-3 select-none text-white/20">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {line.t}
+                </motion.div>
+              ))}
+            </pre>
+          </motion.div>
+
+          {/* floating stat chips */}
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -left-8 top-10 rounded-2xl glass px-4 py-3 text-center glow-violet"
+          >
+            <div className="text-2xl font-bold text-gradient">4+</div>
+            <div className="text-[11px] text-white/55">Years exp</div>
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-6 bottom-10 rounded-2xl glass px-4 py-3 text-center glow-cyan"
+          >
+            <div className="text-2xl font-bold text-gradient-secondary">
+              15+
+            </div>
+            <div className="text-[11px] text-white/55">Apps shipped</div>
           </motion.div>
         </motion.div>
+      </div>
+
+      {/* skill marquee */}
+      <div className="absolute bottom-0 left-0 w-full border-t border-white/5 bg-black/20 py-4 backdrop-blur-sm">
+        <div className="relative flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent)]">
+          <div className="flex shrink-0 animate-marquee gap-10 pr-10 will-change-transform">
+            {[...marqueeSkills, ...marqueeSkills].map((s, i) => (
+              <span
+                key={i}
+                className="whitespace-nowrap font-mono text-sm text-white/40"
+              >
+                {s} <span className="text-neon-violet">/</span>
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

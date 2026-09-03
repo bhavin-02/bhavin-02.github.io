@@ -1,43 +1,56 @@
-# Portfolio Website
+# Bhavin Gunjariya — Portfolio
 
-A modern, responsive portfolio website built with React, TypeScript, and Vite.
+A fast, animated personal portfolio for **Bhavin Gunjariya**, React / React Native developer.
+Dark, premium "midnight + champagne gold" theme with scroll-reveal motion, a filterable
+project showcase, and per-project case-study pages.
 
-## 🚀 Features
+🔗 **Live:** https://bhavin-02.github.io
 
-- **Modern Stack**: Built with React 18, TypeScript, and Vite for optimal performance
-- **Responsive Design**: Fully responsive across all devices
-- **Fast Loading**: Optimized build with Vite's lightning-fast HMR
-- **Type Safety**: Full TypeScript support for robust development
-- **Code Quality**: ESLint configuration for consistent code standards
+## Tech stack
 
-## 🛠️ Tech Stack
+- **React 19** + **Vite 7** + **TypeScript**
+- **Tailwind CSS v4** (design tokens + utilities in `src/styles/globals.css`)
+- **Framer Motion** (`motion`) for animation, **Lenis** for smooth scrolling
+- **React Router** for the project detail routes
+- **lucide-react** icons
 
-- **Frontend**: React, TypeScript
-- **Build Tool**: Vite
-- **Styling**: CSS3 / [Your styling solution]
-- **Linting**: ESLint
+## Getting started
 
-## 📁 Project Structure
+```bash
+bun install      # or: npm install
+bun run dev      # start the dev server (http://localhost:5173)
+bun run build    # type-check + production build to /dist
+bun run preview  # preview the production build
+bun run lint     # run ESLint
+```
+
+## Project structure
 
 ```
 src/
-├── components/     # Reusable UI components
-├── pages/         # Page components
-├── assets/        # Static assets
-├── styles/        # Global styles
-└── utils/         # Utility functions
+├── components/          # Section components (Hero, About, Experience, …)
+│   └── common/          # Reusable motion primitives (Reveal, TiltCard, …)
+├── data/
+│   ├── portfolio.ts     # Profile, experience, skills, stats
+│   └── projectsData.ts  # Projects + per-project accent colors
+├── pages/               # HomePage, ProjectDetailPage, NotFoundPage
+├── styles/globals.css   # Tailwind entry + design system (tokens, keyframes)
+└── constants/           # Contact / social links
+public/
+├── logo.svg             # Favicon (gold "B" monogram)
+├── og-image.jpg         # Social share preview (1200×630)
+└── Bhavin-Gunjariya-Resume.pdf
 ```
 
-## 🌐 Live Demo
+## Editing content
 
-[View Live Site](your-deployed-url)
+- **Projects** — edit `src/data/projectsData.ts`.
+- **Experience / skills / bio / stats** — edit `src/data/portfolio.ts`.
+- **Contact & social links** — edit `src/constants/constants.ts`.
+- **Theme colors / fonts** — edit the tokens at the top of `src/styles/globals.css`.
 
-## 📧 Contact
+## Deployment
 
-- **Email**: [your-email]
-- **LinkedIn**: [your-linkedin]
-- **GitHub**: [your-github]
-
----
-
-⭐ Star this repository if you found it helpful!
+Pushing to `main` triggers the GitHub Actions workflow
+(`.github/workflows/main.yml`), which builds with `bun run build` and deploys
+`/dist` to GitHub Pages.
