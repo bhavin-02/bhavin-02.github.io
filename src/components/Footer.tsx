@@ -44,8 +44,7 @@ export function Footer() {
       </div>
 
       <div className="mx-auto mt-6 max-w-7xl px-5 text-center text-xs text-white/35 md:text-left">
-        © {new Date().getFullYear()} {profile.name}. Built with React, Vite,
-        Tailwind CSS & Framer Motion.
+        © {new Date().getFullYear()} {profile.name}.
       </div>
     </footer>
   );

@@ -25,7 +25,7 @@ export type Accent =
   | "amber"
   | "fuchsia";
 
-export type Platform = "Web" | "Mobile" | "Web & Mobile" | "Full-Stack";
+export type Platform = "Web" | "Mobile" | "Web & Mobile";
 
 export interface Project {
   id: string;
@@ -52,7 +52,7 @@ export const projectsData: Project[] = [
     title: "Event Bazaar — Event Marketplace Platform",
     shortTitle: "Event Bazaar",
     company: "Mighty Ventures",
-    period: "2024 — Present",
+    period: "2024 — 2026",
     category: "Marketplace",
     domain: "Event Marketplace",
     platform: "Web",
@@ -90,7 +90,7 @@ export const projectsData: Project[] = [
     title: "Event Bazaar — Mobile Application",
     shortTitle: "Event Bazaar App",
     company: "Mighty Ventures",
-    period: "2024 — Present",
+    period: "2024 — 2026",
     category: "Mobile App",
     domain: "Event Marketplace",
     platform: "Mobile",
@@ -197,7 +197,7 @@ export const projectsData: Project[] = [
     title: "Mighty Ventures CRM Dashboard",
     shortTitle: "MV CRM",
     company: "Mighty Ventures",
-    period: "2024 — Present",
+    period: "2024 — 2026",
     category: "Enterprise",
     domain: "Enterprise / Internal Tools",
     platform: "Web",
@@ -264,14 +264,14 @@ export const projectsData: Project[] = [
     title: "GIC — Diagnostic Center Management Platform",
     shortTitle: "GIC",
     company: "Mighty Ventures",
-    period: "2024 — Present",
+    period: "2024 — 2026",
     category: "Healthcare",
-    domain: "Healthcare / Full-Stack",
-    platform: "Full-Stack",
+    domain: "Healthcare",
+    platform: "Web",
     tagline:
-      "A full-stack management platform for a diagnostic & radiology center.",
+      "A healthcare management platform for a diagnostic & radiology center.",
     overview:
-      "A full-stack management platform for a diagnostic / radiology center — covering patient records, appointment scheduling, investigation & modality tracking, referral-doctor management, patient billing with payment history, and report-document generation, with role-based dashboards for admin and receptionist users.",
+      "A healthcare management platform for a diagnostic / radiology center — covering patient records, appointment scheduling, investigation & modality tracking, referral-doctor management, patient billing with payment history, and report-document generation, with role-based dashboards for admin and receptionist users.",
     highlights: [
       "Patient records & appointment scheduling",
       "Investigation and modality tracking",
