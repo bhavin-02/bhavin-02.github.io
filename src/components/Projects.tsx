@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { accentMap, projectsData, type Project } from "../data/projectsData";
 import { Reveal, SectionHeading, TiltCard } from "./common/primitives";
 
-const filters = ["All", "Web", "Mobile", "Full-Stack"] as const;
+const filters = ["All", "Web", "Mobile"] as const;
 type Filter = (typeof filters)[number];
 
 function matches(project: Project, filter: Filter): boolean {
@@ -15,7 +15,7 @@ function matches(project: Project, filter: Filter): boolean {
     return (
       project.platform === "Mobile" || project.platform === "Web & Mobile"
     );
-  return project.platform === "Full-Stack";
+  return false;
 }
 
 function ProjectCard({
