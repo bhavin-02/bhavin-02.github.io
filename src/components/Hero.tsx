@@ -156,7 +156,7 @@ export function Hero() {
                 className="group inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 font-semibold text-white/90 transition-colors hover:bg-white/10"
               >
                 <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-                Résumé
+                Resume
               </a>
             </Magnetic>
           </motion.div>
