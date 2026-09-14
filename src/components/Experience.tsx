@@ -40,7 +40,7 @@ export function Experience() {
 
                     <motion.div
                       whileHover={{ y: -4 }}
-                      className={`ml-12 w-full rounded-2xl glass p-6 md:ml-0 md:w-[calc(50%-2.5rem)] ${
+                      className={`ml-12 w-auto rounded-2xl glass p-6 md:ml-0 md:w-[calc(50%-2.5rem)] ${
                         left ? "" : "md:ml-auto"
                       }`}
                     >
