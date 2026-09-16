@@ -262,12 +262,18 @@
      differ only in blur radius and opacity, so every surface reads as
      the same material. The blur radius is the expensive part — use
      `glass-sm` for chips and reserve `glass-blur` for the few overlays
-     that float above scrolling content. */
+     that float above scrolling content.
+
+     IMPORTANT: write only the unprefixed `backdrop-filter`. Tailwind v4's
+     Lightning CSS auto-adds `-webkit-backdrop-filter` for older Safari at
+     build time. If you ALSO hand-write the `-webkit-` line, Lightning
+     collapses the pair and keeps ONLY the prefixed one — which current
+     Chromium no longer recognises, so the blur silently vanishes in the
+     production build (it still shows in dev, which isn't minified). */
   .glass {
     background-image: var(--glass-fill);
     background-color: rgba(18, 17, 14, 0.34);
     backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-specular), var(--glass-drop);
     transition: background-color var(--dur-mid) var(--ease-smooth),
@@ -279,7 +285,6 @@
     background-image: var(--glass-fill);
     background-color: rgba(18, 17, 14, 0.26);
     backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
     border: 1px solid var(--glass-border);
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
       inset 0 -1px 0 0 rgba(0, 0, 0, 0.24);
@@ -292,7 +297,6 @@
     background-image: var(--glass-fill-strong);
     background-color: rgba(13, 12, 10, 0.5);
     backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
     border: 1px solid rgba(212, 175, 106, 0.2);
     box-shadow: var(--glass-specular), 0 30px 70px -32px rgba(0, 0, 0, 0.95);
     transition: background-color var(--dur-mid) var(--ease-smooth),
@@ -320,7 +324,6 @@
     background-image: var(--glass-fill-strong);
     background-color: rgba(11, 10, 8, 0.52);
     backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
-    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: var(--glass-specular), 0 24px 60px -30px rgba(0, 0, 0, 0.9);
   }
@@ -443,7 +446,6 @@
   }
   .border-gradient-glass {
     backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
   }
   .border-gradient::before {
     content: "";
@@ -563,7 +565,6 @@
   .border-gradient-glass,
   .border-gradient {
     backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
     background-color: rgba(20, 19, 16, 0.94) !important;
   }
 }
