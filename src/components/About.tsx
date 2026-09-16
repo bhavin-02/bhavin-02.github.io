@@ -1,11 +1,41 @@
-import { motion } from "motion/react";
-import { highlights, profile, stats } from "../data/portfolio";
+import { motion } from 'motion/react';
+import { highlights, profile, stats } from '../data/portfolio';
+import { softSpring, useSpotlight } from './common/motion';
 import {
   AnimatedCounter,
   Aurora,
-  Reveal,
   SectionHeading,
-} from "./common/primitives";
+  Stagger,
+  StaggerItem,
+} from './common/primitives';
+
+function StatCard({
+  value,
+  suffix,
+  label,
+}: {
+  value: string | number;
+  suffix?: string;
+  label: string;
+}) {
+  const spot = useSpotlight<HTMLDivElement>();
+
+  return (
+    <motion.div
+      ref={spot.ref}
+      onMouseMove={spot.onMouseMove}
+      whileHover={{ y: -6 }}
+      transition={softSpring}
+      className="spotlight sheen group relative h-full overflow-hidden rounded-2xl glass glass-hover p-6 text-center"
+    >
+      <div className="absolute inset-x-0 -top-px h-px bg-linear-to-r from-transparent via-neon-violet/60 to-transparent" />
+      <div className="relative z-10 text-4xl font-extrabold text-gradient md:text-5xl">
+        <AnimatedCounter value={Number(value)} suffix={suffix} />
+      </div>
+      <div className="relative z-10 mt-2 text-sm text-white/55">{label}</div>
+    </motion.div>
+  );
+}
 
 export function About() {
   return (
@@ -17,7 +47,7 @@ export function About() {
           eyebrow="About me"
           title={
             <>
-              Turning complex requirements into{" "}
+              Turning complex requirements into{' '}
               <span className="text-gradient">delightful products</span>
             </>
           }
@@ -25,34 +55,29 @@ export function About() {
         />
 
         {/* Stats */}
-        <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.08}>
-              <div className="group relative h-full overflow-hidden rounded-2xl glass p-6 text-center transition-transform duration-300 hover:-translate-y-1">
-                <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-neon-violet/60 to-transparent" />
-                <div className="text-4xl font-extrabold text-gradient md:text-5xl">
-                  <AnimatedCounter
-                    value={Number(s.value)}
-                    suffix={s.suffix}
-                  />
-                </div>
-                <div className="mt-2 text-sm text-white/55">{s.label}</div>
-              </div>
-            </Reveal>
+        <Stagger className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {stats.map(s => (
+            <StaggerItem key={s.label} className="h-full">
+              <StatCard value={s.value} suffix={s.suffix} label={s.label} />
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
 
         {/* Highlight cards */}
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {highlights.map((h, i) => {
+        <Stagger
+          className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+          stagger={0.1}
+        >
+          {highlights.map(h => {
             const Icon = h.icon;
             return (
-              <Reveal key={h.title} delay={i * 0.08}>
+              <StaggerItem key={h.title} className="h-full">
                 <motion.div
                   whileHover={{ y: -6 }}
-                  className="group relative h-full overflow-hidden rounded-2xl border-gradient p-6"
+                  transition={softSpring}
+                  className="group relative h-full overflow-hidden rounded-2xl border-gradient border-gradient-glass p-6"
                 >
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-neon-violet transition-colors group-hover:bg-white/10">
+                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl glass-chip text-neon-violet transition-all duration-500 group-hover:scale-110 group-hover:text-neon-amber">
                     <Icon className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-semibold text-white">
@@ -62,10 +87,10 @@ export function About() {
                     {h.description}
                   </p>
                 </motion.div>
-              </Reveal>
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

@@ -8,12 +8,21 @@ import {
   User,
   X,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "motion/react";
 import { useEffect, useMemo, useState } from "react";
+import { softSpring } from "./common/motion";
 
 export function ModernNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [condensed, setCondensed] = useState(false);
+  const { scrollY } = useScroll();
 
   const navItems = useMemo(
     () => [
@@ -26,6 +35,12 @@ export function ModernNavigation() {
     ],
     []
   );
+
+  // Once you leave the hero the bar tucks up and tightens — a small
+  // change, but it makes the page feel responsive to where you are.
+  useMotionValueEvent(scrollY, "change", (v) => {
+    setCondensed(v > 80);
+  });
 
   useEffect(() => {
     // IntersectionObserver instead of a scroll handler — no per-frame layout
@@ -58,10 +73,18 @@ export function ModernNavigation() {
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         className="fixed left-1/2 top-6 z-50 hidden -translate-x-1/2 md:block"
       >
-        <div className="glass-blur rounded-full px-2 py-2">
+        <motion.div
+          animate={{
+            scale: condensed ? 0.94 : 1,
+            y: condensed ? -6 : 0,
+          }}
+          transition={softSpring}
+          className="glass-blur rounded-full px-2 py-2"
+          onMouseLeave={() => setHovered(null)}
+        >
           <div className="flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -70,17 +93,26 @@ export function ModernNavigation() {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  onMouseEnter={() => setHovered(item.id)}
+                  className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium ${
                     active
                       ? "text-primary-foreground"
                       : "text-white/65 hover:text-white"
                   }`}
                 >
+                  {/* soft hover pill that slides between items */}
+                  {hovered === item.id && !active && (
+                    <motion.span
+                      layoutId="navHover"
+                      className="absolute inset-0 rounded-full bg-white/10"
+                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                    />
+                  )}
                   {active && (
                     <motion.span
                       layoutId="activeNav"
-                      className="absolute inset-0 gradient-primary rounded-full"
-                      transition={{ type: "spring", duration: 0.6 }}
+                      className="absolute inset-0 gradient-primary rounded-full shadow-[0_6px_22px_-8px_rgba(212,175,106,0.9)]"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   )}
                   <Icon className="relative z-10 h-4 w-4" />
@@ -89,26 +121,28 @@ export function ModernNavigation() {
               );
             })}
           </div>
-        </div>
+        </motion.div>
       </motion.nav>
 
       {/* Mobile toggle */}
       <motion.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ ...softSpring, delay: 0.2 }}
+        whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen((v) => !v)}
         aria-label="Toggle menu"
+        aria-expanded={isOpen}
         className="glass-blur fixed right-5 top-5 z-50 flex h-11 w-11 items-center justify-center rounded-full text-white md:hidden"
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           {isOpen ? (
             <motion.span
               key="close"
               initial={{ rotate: -90, opacity: 0 }}
               animate={{ rotate: 0, opacity: 1 }}
               exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             >
               <X className="h-5 w-5" />
             </motion.span>
@@ -118,7 +152,7 @@ export function ModernNavigation() {
               initial={{ rotate: 90, opacity: 0 }}
               animate={{ rotate: 0, opacity: 1 }}
               exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             >
               <Menu className="h-5 w-5" />
             </motion.span>
@@ -129,39 +163,57 @@ export function ModernNavigation() {
       {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: -20 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed right-5 top-20 z-40 md:hidden"
-          >
-            <div className="glass-blur min-w-52 rounded-2xl p-3">
-              <div className="space-y-1">
-                {navItems.map((item, index) => {
-                  const Icon = item.icon;
-                  const active = activeSection === item.id;
-                  return (
-                    <motion.button
-                      key={item.id}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.06 }}
-                      onClick={() => scrollToSection(item.id)}
-                      className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
-                        active
-                          ? "gradient-primary text-primary-foreground"
-                          : "text-white/70 hover:bg-white/5 hover:text-white"
-                      }`}
-                    >
-                      <Icon className="h-4 w-4" />
-                      {item.label}
-                    </motion.button>
-                  );
-                })}
+          <>
+            {/* tap-away scrim */}
+            <motion.div
+              key="scrim"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            />
+            <motion.div
+              key="menu"
+              initial={{ opacity: 0, scale: 0.92, y: -16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: -16 }}
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed right-5 top-20 z-40 origin-top-right md:hidden"
+            >
+              <div className="glass-blur min-w-52 rounded-2xl p-3">
+                <div className="space-y-1">
+                  {navItems.map((item, index) => {
+                    const Icon = item.icon;
+                    const active = activeSection === item.id;
+                    return (
+                      <motion.button
+                        key={item.id}
+                        initial={{ opacity: 0, x: 18 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          duration: 0.34,
+                          delay: index * 0.05,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => scrollToSection(item.id)}
+                        className={`flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium ${
+                          active
+                            ? "gradient-primary text-primary-foreground"
+                            : "text-white/70 hover:bg-white/10 hover:text-white"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {item.label}
+                      </motion.button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

@@ -65,6 +65,59 @@
   --sidebar-accent-foreground: #f3f1ea;
   --sidebar-border: rgba(212, 175, 106, 0.14);
   --sidebar-ring: #d4af6a;
+
+  /* ----------------------------------------------------------
+     Glass system — one place to retune every frosted surface
+     ---------------------------------------------------------- */
+  --glass-blur-sm: 10px;
+  --glass-blur-md: 16px;
+  --glass-blur-lg: 26px;
+  --glass-saturate: 165%;
+
+  /* Translucent fill: a faint diagonal so the pane catches light
+     unevenly, the way real glass does. */
+  --glass-fill: linear-gradient(
+    148deg,
+    rgba(255, 255, 255, 0.085) 0%,
+    rgba(255, 255, 255, 0.028) 44%,
+    rgba(255, 255, 255, 0.052) 100%
+  );
+  --glass-fill-strong: linear-gradient(
+    148deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(16, 15, 12, 0.55) 46%,
+    rgba(16, 15, 12, 0.68) 100%
+  );
+
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-lit: rgba(212, 175, 106, 0.34);
+
+  /* Specular edges: bright hairline on top, shadowed lip at the bottom. */
+  --glass-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.3),
+    inset 0 0 30px -18px rgba(255, 255, 255, 0.5);
+  --glass-drop: 0 18px 46px -26px rgba(0, 0, 0, 0.9);
+
+  /* ----------------------------------------------------------
+     Motion — shared easings + durations
+     ---------------------------------------------------------- */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur-fast: 200ms;
+  --dur-mid: 400ms;
+  --dur-slow: 700ms;
+}
+
+/* Phones do the same per-frame compositing on far less GPU. Trim the blur
+   radii rather than dropping the material — the look survives, the
+   scrolling stays smooth. */
+@media (max-width: 767px) {
+  :root {
+    --glass-blur-sm: 6px;
+    --glass-blur-md: 10px;
+    --glass-blur-lg: 14px;
+  }
 }
 
 @theme inline {
@@ -122,6 +175,11 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
+  /* Easings exposed as Tailwind utilities (ease-smooth, ease-expo, …) */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
   /* Animations exposed as Tailwind utilities */
   --animate-aurora: aurora 18s ease-in-out infinite alternate;
   --animate-float: float 6s ease-in-out infinite;
@@ -132,6 +190,7 @@
   --animate-marquee-rev: marquee-rev 40s linear infinite;
   --animate-glow: glow-pulse 3s ease-in-out infinite;
   --animate-spin-slow: spin 24s linear infinite;
+  --animate-breathe: breathe 7s ease-in-out infinite;
 }
 
 @layer base {
@@ -163,6 +222,21 @@
     letter-spacing: -0.015em;
   }
 
+  /* Interactive elements ease rather than snap. */
+  a,
+  button {
+    transition: color var(--dur-fast) var(--ease-smooth),
+      background-color var(--dur-fast) var(--ease-smooth),
+      border-color var(--dur-fast) var(--ease-smooth),
+      box-shadow var(--dur-mid) var(--ease-smooth),
+      transform var(--dur-mid) var(--ease-smooth);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
@@ -182,26 +256,125 @@
    Utilities — glass, glow, gradients, backgrounds
    ============================================================ */
 @layer utilities {
-  /* Cheap "glass" — translucent surface, NO backdrop-filter (keeps scrolling
-     smooth). Over the near-black background this reads the same as frosted
-     glass without the per-frame blur recompute. */
+  /* ---- Frosted glass tiers ------------------------------------------
+     All tiers share one recipe: translucent diagonal fill, a real
+     backdrop blur, a hairline border and specular inner edges. They
+     differ only in blur radius and opacity, so every surface reads as
+     the same material. The blur radius is the expensive part — use
+     `glass-sm` for chips and reserve `glass-blur` for the few overlays
+     that float above scrolling content. */
   .glass {
-    background: rgba(30, 27, 22, 0.5);
-    border: 1px solid rgba(212, 175, 106, 0.12);
+    background-image: var(--glass-fill);
+    background-color: rgba(18, 17, 14, 0.34);
+    backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-specular), var(--glass-drop);
+    transition: background-color var(--dur-mid) var(--ease-smooth),
+      border-color var(--dur-mid) var(--ease-smooth),
+      box-shadow var(--dur-mid) var(--ease-smooth);
+  }
+
+  .glass-sm {
+    background-image: var(--glass-fill);
+    background-color: rgba(18, 17, 14, 0.26);
+    backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.24);
+    transition: background-color var(--dur-mid) var(--ease-smooth),
+      border-color var(--dur-mid) var(--ease-smooth),
+      box-shadow var(--dur-mid) var(--ease-smooth);
   }
 
   .glass-strong {
-    background: rgba(13, 12, 10, 0.86);
-    border: 1px solid rgba(212, 175, 106, 0.16);
+    background-image: var(--glass-fill-strong);
+    background-color: rgba(13, 12, 10, 0.5);
+    backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate));
+    border: 1px solid rgba(212, 175, 106, 0.2);
+    box-shadow: var(--glass-specular), 0 30px 70px -32px rgba(0, 0, 0, 0.95);
+    transition: background-color var(--dur-mid) var(--ease-smooth),
+      border-color var(--dur-mid) var(--ease-smooth),
+      box-shadow var(--dur-mid) var(--ease-smooth);
   }
 
-  /* Real backdrop blur — use ONLY on a few overlay elements (nav) that sit
-     above scrolling content, where the effect is worth the cost. */
+  /* Nested glass — pills and icon tiles that sit *inside* a frosted
+     pane. backdrop-filter starts a new backdrop root, so a blurred chip
+     on a blurred card can only sample its parent's flat fill: the blur
+     costs GPU time and buys nothing. These keep the same fill, hairline
+     and specular edge, minus the blur. */
+  .glass-chip {
+    background-image: var(--glass-fill);
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    transition: background-color var(--dur-fast) var(--ease-smooth),
+      border-color var(--dur-fast) var(--ease-smooth),
+      transform var(--dur-fast) var(--ease-smooth);
+  }
+
+  /* Overlay glass — nav and menus floating above moving content. */
   .glass-blur {
-    background: rgba(13, 12, 10, 0.6);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(212, 175, 106, 0.14);
+    background-image: var(--glass-fill-strong);
+    background-color: rgba(11, 10, 8, 0.52);
+    backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: var(--glass-specular), 0 24px 60px -30px rgba(0, 0, 0, 0.9);
+  }
+
+  /* Hover treatment for glass that is clickable. */
+  .glass-hover:hover {
+    background-color: rgba(34, 31, 25, 0.44);
+    border-color: var(--glass-border-lit);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.24),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.3),
+      inset 0 0 40px -16px rgba(212, 175, 106, 0.45),
+      0 26px 56px -28px rgba(0, 0, 0, 0.95);
+  }
+
+  /* Cursor-tracked specular bloom. Pair with the useSpotlight() hook,
+     which writes --mx/--my. Host must be positioned and carry a radius. */
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      260px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(212, 175, 106, 0.16),
+      transparent 68%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-mid) var(--ease-smooth);
+  }
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Single light sweep across the pane on hover. */
+  .sheen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -160%;
+    width: 65%;
+    height: 100%;
+    pointer-events: none;
+    transform: skewX(-18deg);
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(255, 255, 255, 0.13),
+      transparent
+    );
+    transition: left 900ms var(--ease-smooth);
+  }
+  .sheen:hover::before {
+    left: 160%;
   }
 
   /* Rich, deep gold — legible with white text */
@@ -256,12 +429,21 @@
     text-shadow: 0 0 26px rgba(212, 175, 106, 0.4);
   }
 
-  /* Gradient border card */
+  /* Gradient border card — translucent pane behind a lit rim. Left
+     un-blurred so it can host frosted children; add
+     `border-gradient-glass` when the card has no glass inside it. */
   .border-gradient {
     position: relative;
-    background: rgba(255, 255, 255, 0.025);
+    background-image: var(--glass-fill);
+    background-color: rgba(18, 17, 14, 0.3);
     border: 1px solid transparent;
     background-clip: padding-box;
+    box-shadow: var(--glass-drop);
+    transition: box-shadow var(--dur-mid) var(--ease-smooth);
+  }
+  .border-gradient-glass {
+    backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
   }
   .border-gradient::before {
     content: "";
@@ -270,10 +452,12 @@
     border-radius: inherit;
     padding: 1px;
     background: linear-gradient(135deg, rgba(212, 175, 106, 0.55), rgba(212, 175, 106, 0.08), rgba(231, 207, 156, 0.4));
+    background-size: 220% 220%;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+    animation: gradient-pan 11s ease-in-out infinite;
   }
 
   /* Backgrounds */
@@ -293,6 +477,30 @@
   .mask-radial {
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 60%, transparent 100%);
     mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 60%, transparent 100%);
+  }
+
+  /* Fine film grain — keeps large frosted panes from banding. */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Browsers without backdrop-filter get a near-opaque fallback so text
+   never lands on a see-through pane. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-sm,
+  .glass-strong,
+  .glass-blur,
+  .border-gradient-glass,
+  .border-gradient {
+    background-color: rgba(20, 19, 16, 0.88);
   }
 }
 
@@ -331,6 +539,10 @@
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -339,5 +551,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Respect reduced transparency — drop the blur, keep the layout */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-sm,
+  .glass-strong,
+  .glass-blur,
+  .border-gradient-glass,
+  .border-gradient {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(20, 19, 16, 0.94) !important;
   }
 }

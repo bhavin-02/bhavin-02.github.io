@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ProjectDetail } from "../components/ProjectDetail";
+import { PageTransition } from "../components/common/primitives";
 import { getProjectById } from "../data/projectsData";
 import { NotFoundPage } from "./NotFoundPage";
 
@@ -13,5 +14,9 @@ export function ProjectDetailPage() {
     return <NotFoundPage />;
   }
 
-  return <ProjectDetail project={project} onBack={() => navigate(-1)} />;
+  return (
+    <PageTransition>
+      <ProjectDetail project={project} onBack={() => navigate(-1)} />
+    </PageTransition>
+  );
 }

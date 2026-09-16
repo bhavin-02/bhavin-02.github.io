@@ -1,81 +1,149 @@
-import { ArrowLeft, Home, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Home, Sparkles } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { softSpring, useSpotlight } from '../components/common/motion';
+import {
+  Aurora,
+  Magnetic,
+  PageTransition,
+} from '../components/common/primitives';
 
 export function NotFoundPage() {
   const navigate = useNavigate();
+  const panel = useSpotlight<HTMLDivElement>();
+
+  // Fixed once per mount — regenerating on every render made the dust
+  // twitch whenever anything else updated.
+  const dust = useMemo(
+    () =>
+      Array.from({ length: 22 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 3}s`,
+        duration: `${2 + Math.random() * 3}s`,
+      })),
+    [],
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-purple-900/50 to-neutral-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Floating particles */}
-      <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white/20 rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 3}s`,
+    <PageTransition>
+      <div className="grain relative flex min-h-screen items-center justify-center overflow-hidden bg-background p-4">
+        <Aurora />
+        <div className="absolute inset-0 bg-grid mask-radial opacity-50" />
+
+        {/* drifting dust */}
+        <div className="absolute inset-0">
+          {dust.map((d, i) => (
+            <span
+              key={i}
+              className="absolute h-1 w-1 rounded-full bg-neon-amber/30 animate-pulse"
+              style={{
+                left: d.left,
+                top: d.top,
+                animationDelay: d.delay,
+                animationDuration: d.duration,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-2xl text-center">
+          {/* 404 */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="relative mb-10"
+          >
+            <div className="text-[8rem] font-bold leading-none text-gradient-animate md:text-[12rem]">
+              404
+            </div>
+            <div className="absolute inset-0 text-[8rem] font-bold leading-none text-neon-amber/10 blur-3xl md:text-[12rem]">
+              404
+            </div>
+          </motion.div>
+
+          {/* message */}
+          <motion.div
+            ref={panel.ref}
+            onMouseMove={panel.onMouseMove}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.15,
+              ease: [0.22, 1, 0.36, 1],
             }}
-          />
-        ))}
-      </div>
-
-      <div className="text-center max-w-2xl mx-auto relative z-10">
-        {/* Glowing 404 */}
-        <div className="relative mb-12">
-          <div className="text-[8rem] md:text-[12rem] font-bold text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text leading-none animate-pulse">
-            404
-          </div>
-          <div className="absolute inset-0 text-[8rem] md:text-[12rem] font-bold text-cyan-400/10 blur-3xl">
-            404
-          </div>
-        </div>
-
-        {/* Elegant message */}
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8 mb-8 shadow-2xl">
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <Sparkles className="w-6 h-6 text-cyan-400 animate-spin" />
-            <span className="text-cyan-400 font-medium">Lost in Space</span>
-            <Sparkles className="w-6 h-6 text-pink-400 animate-spin" />
-          </div>
-
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-            Page Not Found
-          </h1>
-
-          <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-            The page you're looking for has drifted into the digital void.
-            <br className="hidden md:block" />
-            Let's navigate you back to familiar territory.
-          </p>
-        </div>
-
-        {/* Aesthetic buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            onClick={() => navigate("/")}
-            className="group flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-2xl hover:from-cyan-400 hover:to-purple-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25"
+            className="spotlight relative mb-8 overflow-hidden rounded-3xl glass p-8"
           >
-            <Home className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-            Return Home
-          </button>
+            <div className="relative z-10">
+              <div className="mb-6 flex items-center justify-center gap-2">
+                <Sparkles className="h-5 w-5 text-neon-amber animate-glow" />
+                <span className="text-sm font-medium uppercase tracking-[0.2em] text-neon-amber">
+                  Lost in space
+                </span>
+                <Sparkles className="h-5 w-5 text-neon-violet animate-glow" />
+              </div>
 
-          <button
-            onClick={() => navigate(-1)}
-            className="group flex items-center justify-center gap-3 px-8 py-4 backdrop-blur-xl bg-white/10 border border-white/20 text-white rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
+              <h1 className="mb-5 text-3xl font-bold text-white md:text-4xl">
+                Page not found
+              </h1>
+
+              <p className="text-base leading-relaxed text-white/60 md:text-lg">
+                The page you're looking for has drifted into the digital void.
+                <br className="hidden md:block" />
+                Let's navigate you back to familiar territory.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col justify-center gap-4 sm:flex-row"
           >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Go Back
-          </button>
-        </div>
+            <Magnetic>
+              <motion.button
+                onClick={() => navigate('/')}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                transition={softSpring}
+                className="group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-full px-8 py-4 font-semibold text-white glow-primary sm:w-auto"
+              >
+                <span className="absolute inset-0 gradient-primary bg-size-[200%_auto] animate-gradient" />
+                <span className="pointer-events-none absolute inset-y-0 -left-full w-1/2 skew-x-[-18deg] bg-white/25 blur-[2px] transition-[left] duration-700 ease-smooth group-hover:left-full" />
+                <Home className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
+                <span className="relative z-10">Return home</span>
+              </motion.button>
+            </Magnetic>
 
-        {/* Subtle footer */}
-        <p className="text-gray-500 mt-12 text-sm">
-          "Not all who wander are lost, but this page definitely is."
-        </p>
+            <Magnetic>
+              <motion.button
+                onClick={() => navigate(-1)}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                transition={softSpring}
+                className="group relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-full glass glass-hover px-8 py-4 font-semibold text-white sheen sm:w-auto"
+              >
+                <ArrowLeft className="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1" />
+                Go back
+              </motion.button>
+            </Magnetic>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mt-12 text-sm text-white/35"
+          >
+            Not all who wander are lost — this page definitely is.
+          </motion.p>
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
