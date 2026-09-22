@@ -94,6 +94,9 @@ export const experience: ExperienceItem[] = [
       "Razorpay",
       "Material-UI",
       "Framer Motion",
+      "Reanimated",
+      "Tailwind CSS",
+      "Gesture Handler",
     ],
   },
   {
