@@ -77,7 +77,7 @@ export interface ExperienceItem {
 export const experience: ExperienceItem[] = [
   {
     company: "Mighty Ventures",
-    role: "ReactJS / NextJS / React Native Developer",
+    role: "Team Leader & ReactJS, NextJS, React Native Developer",
     period: "Aug 2024 — Present",
     points: [
       "Led frontend development across healthcare, fintech/NBFC, event marketplace and car-rental products for web and mobile.",
@@ -98,7 +98,7 @@ export const experience: ExperienceItem[] = [
   },
   {
     company: "LNX Cloud Technology",
-    role: "ReactJS / React Native Developer",
+    role: "ReactJS, React Native Developer",
     period: "Jan 2022 — Nov 2023",
     points: [
       "Led React Native projects across social networking, interactive polling, creative design tools and video sharing.",
