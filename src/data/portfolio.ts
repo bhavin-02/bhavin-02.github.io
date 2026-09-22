@@ -78,7 +78,7 @@ export const experience: ExperienceItem[] = [
   {
     company: "Mighty Ventures",
     role: "Team Leader & ReactJS, NextJS, React Native Developer",
-    period: "Aug 2024 — Present",
+    period: "Nov 2023 — Present",
     points: [
       "Led frontend development across healthcare, fintech/NBFC, event marketplace and car-rental products for web and mobile.",
       "Built role-based access control, real-time Socket.io features, Razorpay payment integrations and complex multi-step form workflows with validation.",
