@@ -97,24 +97,6 @@ export const experience: ExperienceItem[] = [
     ],
   },
   {
-    company: "Acquaint SoftTech",
-    role: "React Native Developer",
-    period: "Nov 2023 — Jun 2024",
-    points: [
-      "Specialized in React Native cross-platform development, building reusable UI component libraries and design systems.",
-      "Mastered advanced animations with React Native Reanimated for smooth, gesture-driven mobile experiences.",
-      "Delivered production-ready UI kits across e-commerce fashion, payment management and real estate.",
-      "Learned component-library architecture, documentation patterns, npm publishing and native-module integration.",
-    ],
-    tags: [
-      "React Native",
-      "Reanimated",
-      "Tailwind CSS",
-      "TypeScript",
-      "Gesture Handler",
-    ],
-  },
-  {
     company: "LNX Cloud Technology",
     role: "ReactJS / React Native Developer",
     period: "Jan 2022 — Nov 2023",
